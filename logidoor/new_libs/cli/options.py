@@ -71,14 +71,14 @@ def parse_options():
         help="Path to password wordlist"
     )
     group_wordlist.add_argument(
-        "-ul",
+        "-uW",
         "--pre-user-list",
         help=f"Select prebuild username wordlist. Choices: {pre_user_list}",
         metavar="Wordlist",
         choices=pre_user_list
     )
     group_wordlist.add_argument(
-        "-pl",
+        "-pW",
         "--pre-pass-list",
         help=f"Select prebuild password wordlist. Choices: {pre_passwd_list}",
         metavar="Wordlist",
@@ -97,8 +97,9 @@ def parse_options():
 
 
 class ProgOptions:
-    def __init__(self, user_options):
-        self.user_options = user_options
+    def __init__(self):
+        args = parse_options()
+        self.user_options = args.parse_args()
         self.url = self.__validate_url_option()
         self.userlist = self.__validate_user_list()
         self.passlist = self.__validate_pass_list()
