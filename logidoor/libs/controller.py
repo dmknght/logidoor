@@ -99,7 +99,6 @@ def do_attack(options):
         except KeyboardInterrupt:
             exit(0)
         finally:
-            # TODO print table of login here
             browser.close()
 
     print_results(list(result.queue))
