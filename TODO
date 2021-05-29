@@ -1,0 +1,128 @@
+Project:
+  ☐ Docker
+  ✘ Python 3 @cancelled(19-02-05 21:46) Stupid syntax
+
+Core:
+  ✔ Improve multithreading @done(19-01-13 19:45)
+  ☐ Memory management
+  ✔ Improve URL handling @options @user_communication @done(19-01-22 14:28)
+  ☐ Check URL format (protocol://[domain].[field] @options @high 
+  ✔ Final result combine with list IP @started(19-01-13 21:13) @done(19-01-13 22:39) @lasted(1h26m7s)
+  ☐ Add hotkey to terminate child task only
+  ✔ Task freezy if gets blocked (set timeout) @mechanize @attack_module @high @done(19-01-14 01:41)
+  ☐ Upgrade user-agent
+  ✔ Session issue if webshell URL after dvwa URL @mechanize  @attack_module @done(19-02-05 22:04)
+  ☐ Improve exception in check_login
+  ✔ Fix loginInfo = False causes iterable error message @done(19-02-06 21:16)
+  ☐ New way to check response status code, combine with selenium and fucking selenium
+  Create setup script:
+    ☐ pip install
+    ☐ Setup browser, libs,..
+    ☐ Install and setup webdriver (mix with PATH)
+    ☐ Create folder at $HOME (storage report, log, ..)
+    ☐ Setup postgres user (storage cracked cred)
+  ☐ Create controller module, Add close (exit browser object) function for both mechanize and selenium
+  Add Selenium support @high  #Shoud fix java script issue:
+    ☐ Add help menu
+    ✔ Add options (web driver) @done(19-06-22 18:27)
+    ✔ Switch mechanize and selenium in main @done(19-06-22 18:26)
+    ✔ Add core browser object @done(19-06-22 18:26)
+    ✔ Switch webdriver in browser object @done(19-06-22 18:26)
+    ✔ Parse login form @done(19-06-22 18:26)
+    ☐ Test with websites
+    ☐ Support proxy addr
+    ☐ Support user-agents
+    ☐ Clear all storage and close
+    ☐ Security Issue (from js scripts)
+    ☐ Login identify using localStorage (or any new shit that is useful)
+  ✔ Add option to add username to passlist @done(19-02-22 14:37)
+  ☐ Add "--check" operation
+
+Mechanize:
+  ☐ Javascript Login Form
+  ✔ Fix form has name control only (no id) @done(19-01-13 19:45)
+  ☐ Unsafe SSL website
+  ☐ Website redirection
+  ☐ Form has other tags inside @bug @critical @form_parse 
+
+User communication:
+  ✔ Multithreading issue w/ status bar, result @done(19-01-13 19:45)
+  ☐ Result, reporting
+  ☐ Move report to home folder instead of project folder (permission issue if create deb pkg
+  ✔ Better module for getting user options @done(19-01-13 19:45)
+  ☐ Save creds to db
+  ☐ Create GUI interface
+  ✔ print table bug when print webshell password (password only) @done(19-01-22 12:05)
+
+Attack modules:
+  ✔ HTTP Basic authenticate @done(19-01-13 19:45)
+  ☐ Captcha
+  ✔ Password form only (webshell, etc..) login @done(19-01-13 19:46)
+  2 submit times website (google, yahoo):
+    ☐ Parse login form 2 times
+    ☐ Matching condition
+    ☐ Combine with project
+    ☐ Auto detect instead of choose option manually @user_communication
+  HTTP GET:
+    ✔ Use proxy for attacking tasks @extras @getproxy @done(19-07-07 12:36)
+    ☐ Combine with reauth @extras
+    ✘ Show wrong creds sometimes @bug @high @match_condition @cancelled(19-01-25 11:12) authentication bypassed (possibly race condition vuln)
+  Login Brute:
+    ✔ Improve exception @done(19-01-22 14:28)
+
+Attack conditions:
+  Scan list IPs:
+    ✔ Create new options variable @started(19-01-13 19:53) @done(19-01-13 21:09) @lasted(1h16m3s)
+    ✔ Add help text @done(19-01-13 19:46)
+    ✔ Generate tasks from IP @started(19-01-13 19:53) @done(19-01-13 21:09) @lasted(1h16m12s)
+    ✔ Combine with banner @started(19-01-13 19:53) @done(19-01-13 20:54) @lasted(1h1m47s)
+    ✔ Split proxy list and live proxy list, combine with single IP @extras @getproxy @done(19-01-17 11:46)
+    ☐ Mix with reauth @extras
+    ✔ Mix with HTTP GET @attack_module @done(19-01-13 21:52)
+    ✔ Program does not stop when Ctrl + C @bug @critical @core @done(19-01-13 23:43)
+    ✔ Exception catches wrong @done(19-01-13 23:47)
+    ✔ Fix banner if options.url (no list) @bug @user_communication @low @done(19-01-14 07:03)
+    ✔ Report for multiple users shows first element of sub-elements only @user_communication @high @done(19-01-24 17:02)
+    ✔ No username if use both webshell and user login @critical  @core @done(19-02-05 21:48)
+    ✔ Wrong attack mode if have both http get and http post form login @critical  @form_parse @core @done(19-01-24 16:31)
+  Better form detecting and parsing:
+    ☐ Webshell has text control only
+    ☐ Form has captcha
+  Better matching condition:
+    ☐ WAF shows block messages
+    ☐ Website redirects using meta tag @mechanize
+    ☐ Website directs to error page with no login form
+
+Extras:
+  ☐ Password generating (crewl algh)
+  SQL Injection bypass login:
+    ✔ Detect SQL error @done(19-02-13 22:48)
+    ☐ Test SQL error with page has similar response (before submit)
+    ☐ Improve check options (loop)
+    ✔ Generate payload (boolean-based) @done(19-02-13 22:48)
+    ✔ Cases with / without username / double payload (both username and password field) @done(19-02-13 17:35)
+    ✘ Terminate loop when found 1 payload @cancelled(19-02-13 22:48)
+    ✔ Improve SQL generator functions @done(19-02-13 22:48)
+    ☐ Add bypass WAF text
+    ☐ Add replacing "Space" by other method
+  Get proxy:
+    ☐ Add --no-check option to skip check proxy task
+    ✔ Move to mbrowser (custom mechanize) @done(19-05-07 22:04)
+    ✔ Add taskbar for get_proxy @done(19-05-07 22:04)
+
+  Shodan:
+    ☐ Parse ip list from shodan, replace URL options
+    ☐ Add option to add URL after ip list
+
+BUG:
+  ☐ ReAuth: Can't find login form at https://mail.protonmail.com/login @mechanize @extras 
+  ☐ ReAuth: Can't find login form at https://mega.nz/login @mechanize @extras 
+  ☐ no control matching name 'session[password]' at https://mobile.twitter.com/login @mechanize @form_parse
+  ✔ no control matching name 'password' at https://github.com/login @done(19-01-13 20:04)
+  ☐ ReAuth: double free in remove url from list @syntax @loop @extras @high 
+  ☐ Tomcat manager (< 5.x) wrong @bug @critical @attack_module @form_parse @match_condition
+  ☐ Proxy timeout or connection error after check @extras @getproxy @critical
+  ✔ Fix path file if pwd != project folder @extras @getproxy @user_communication @done(19-01-17 16:55)
+  ✔ " No URL provided! Get proxy only." when use -l (list of IPs) option @done(19-04-21 02:17)
+  ✔ Check proxy connection to first address 2 time @done(19-04-21 02:34)
+  ☐ User-agent isn't replaced @bug @critical 
