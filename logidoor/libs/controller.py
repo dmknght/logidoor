@@ -8,19 +8,21 @@ from logidoor.libs.cli.printf import *
 
 def send_login(browser, url, username, password, result):
     # resp = browser.login(username, password)
+    # Limit length of string using format
+    # https://stackoverflow.com/a/24076314
     if not browser.login_form.entry_text:
-        printg(f"Password: \033[95m{password}\033[0m")
+        printg(f"Password: \033[95m{password:29.29}\033[0m")
     else:
-        printg(f"Username: \033[96m{username}\033[0m Password: \033[95m{password}\033[0m")
+        printg(f"Username: \033[96m{username:29.29}\033[0m Password: \033[95m{password:29.29}\033[0m")
     browser.login(username, password)
     # TODO analysis more from here
     if not browser.find_login_form():
         if browser.login_form.entry_text:
-            found(username, password)
+            print_found(username, password)
             result.put([url, username, password])
             return True
         else:
-            found(None, password)
+            print_found(None, password)
             result.put([url, None, password])
             return True
     else:
@@ -58,7 +60,7 @@ def setup_threads(browser, url, options):
 
 def do_attack(options):
     for url in options.url:
-        print(f"Attacking \033[94m{url}\033[0m")
+        print_attack(url)
         browser = Browser()
         try:
             browser.open(url)
@@ -74,4 +76,5 @@ def do_attack(options):
         except KeyboardInterrupt:
             exit(0)
         finally:
+            # TODO print table of login here
             browser.close()

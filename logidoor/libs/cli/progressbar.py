@@ -7,10 +7,7 @@ def printg(text):
     :param text: string = text to screen
     :return: True (dummy)
     """
-    if len(text) < 80:
-        space = " " * 80
-    else:
-        space = " " * len(text)
+    space = " " * 80
     sys.stdout.write(f"{space}\r")
     sys.stdout.flush()
     sys.stdout.write(f"{text}\r")
