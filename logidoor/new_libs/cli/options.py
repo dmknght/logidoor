@@ -113,25 +113,25 @@ class ProgOptions:
         if self.user_options.url_list:
             return set([validate_url_format(x) for x in self.user_options.url_list])
         elif self.user_options.url:
-            return set([validate_url_format(self.user_options.url)])
+            return {validate_url_format(self.user_options.url)}
         else:
             raise ValueError("URL address is required")
 
     def __validate_user_list(self):
         if self.user_options.username:
-            return set([self.user_options.username])
+            return {self.user_options.username}
         elif self.user_options.user_list:
             return set(filter(None, file_read(self.user_options.user_list).split("\n")))
         elif self.user_options.pre_user_list:
             if self.user_options.pre_user_list in pre_user_list:
-                module = importlib.import_module("logindoor.resources.wordlists." +
+                module = importlib.import_module("../../resources.wordlists." +
                                                  self.user_options.pre_user_list + "_user")
                 return set(module())
             else:
                 raise ValueError("Invalid name of prebuild username wordlist")
         elif self.user_options.pre_wordlist:
             if self.user_options.pre_wordlist in pre_usr_passwd_lists:
-                module = importlib.import_module("logindoor.resources.wordlists." +
+                module = importlib.import_module("resources.wordlists." +
                                                  self.user_options.pre_wordlist + "_user")
                 return set(module())
             else:
@@ -141,19 +141,19 @@ class ProgOptions:
 
     def __validate_pass_list(self):
         if self.user_options.password:
-            return set([self.user_options.password])
+            return {self.user_options.password}
         elif self.user_options.pass_list:
             return set(filter(None, file_read(self.user_options.pass_list).split("\n")))
         elif self.user_options.pre_pass_list:
             if self.user_options.pre_pass_list in pre_passwd_list:
-                module = importlib.import_module("logindoor.resources.wordlists." +
+                module = importlib.import_module("../../resources.wordlists." +
                                                  self.user_options.pre_pass_list + "_pass")
                 return set(module())
             else:
                 raise ValueError("Invalid name of prebuild password wordlist")
         elif self.user_options.pre_wordlist:
             if self.user_options.pre_wordlist in pre_usr_passwd_lists:
-                module = importlib.import_module("logindoor.resources.wordlists." +
+                module = importlib.import_module("resources.wordlists." +
                                                  self.user_options.pre_wordlist + "_pass")
                 return set(module())
             else:
