@@ -1,7 +1,7 @@
 from datetime import datetime
-from logidoor.new_libs.cli import options
-from logidoor.new_libs.controller import do_attack
-from logidoor.new_libs.cli import banner
+from logidoor.libs.cli import options
+from logidoor.libs.controller import do_attack
+from logidoor.libs.cli import banner
 
 if __name__ == "__main__":
     prog_options = options.ProgOptions()

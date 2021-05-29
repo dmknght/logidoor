@@ -1,4 +1,4 @@
-from logidoor.libs.cores import actions
+from logidoor.old.libs.cores import actions
 
 
 def makeReport(data, path):

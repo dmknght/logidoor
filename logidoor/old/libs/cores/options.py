@@ -1,5 +1,5 @@
 import sys
-from logidoor.libs.utils import events
+from logidoor.old.libs.utils import events
 
 
 class ParseOptions(object):
@@ -140,14 +140,13 @@ class ParseOptions(object):
 
         if size_of_options == 1:
             # If user gives no argument, print help banner [short] and exit
-            from logidoor.libs.utils import helps
             helps.print_fast_help()
             events.info(f"Use: {self.HELP_OPTIONS} for more information")
             sys.exit(0)
 
         else:
             # Check if options has help flag -> print help banner [full] and exit
-            if [True if flag in sys.argv else False for flag in self.HELP_OPTIONS][0]: from logidoor.libs.utils import \
+            if [True if flag in sys.argv else False for flag in self.HELP_OPTIONS][0]: from logidoor.old.libs.utils import \
                 helps; helps.print_help()
             try:
                 self.parse_options(size_of_options)

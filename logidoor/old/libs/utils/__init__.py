@@ -27,8 +27,8 @@ def print_table(headers, *args, **kwargs):
 	extra_fill = kwargs.get("extra_fill", 2)
 	header_separator = kwargs.get("header_separator", "-")
 	if not all(map(lambda x: len(x) == len(headers), args)):
-		from logidoor.libs.utils import events
-		events.error("Error headers", "PrintTable")
+		from logidoor.old.libs.utils import events
+        events.error("Error headers", "PrintTable")
 		return False
 	
 	def custom_len(x):

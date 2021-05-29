@@ -1,4 +1,4 @@
-from logidoor.new_libs.mechanicalsoup import stateful_browser
+from logidoor.libs.mechanicalsoup import stateful_browser
 
 
 class Form:

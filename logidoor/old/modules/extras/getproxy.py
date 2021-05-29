@@ -1,9 +1,10 @@
 import re
 import threading
-from logidoor.libs.cores.browser import Browser
-from logidoor.libs.utils import progressbar, events
-from logidoor.libs.cores.actions import file_read, file_write
-from logidoor import data
+from logidoor.old.libs.cores.browser import Browser
+from logidoor.old.libs.utils import progressbar
+from logidoor.old.libs.utils import events
+from logidoor.old.libs.cores.actions import file_read, file_write
+from logidoor.old import data
 import queue
 
 result = queue.Queue()

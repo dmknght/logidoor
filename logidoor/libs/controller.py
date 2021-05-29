@@ -1,8 +1,8 @@
 import threading
 import queue
 
-from logidoor.new_libs.browser import Browser
-# from logidoor.new_libs.cli.progressbar import printg
+from logidoor.libs.browser import Browser
+# from logidoor.libs.cli.progressbar import printg
 
 
 def send_login(browser, url, username, password, result):
@@ -37,6 +37,7 @@ def run_threads(threads):
 
 
 def setup_threads(browser, url, options):
+    # FIXME solve a bottleneck problem
     workers = []
     result = queue.Queue()
 

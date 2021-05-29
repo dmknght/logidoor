@@ -1,8 +1,7 @@
 import re
-import sys
 
-from logidoor.libs.cores.actions import str_to_list, file_read
-from logidoor.libs.utils import events
+from logidoor.old.libs.cores.actions import str_to_list, file_read
+from logidoor.old.libs.utils import events
 
 
 # def check_import():
@@ -86,7 +85,7 @@ def find_login_request(options):
     """
     login_request = False
     try:
-        from logidoor.libs.cores.browser import Browser
+        from logidoor.old.libs.cores.browser import Browser
 
         proc = Browser()
 
@@ -222,14 +221,14 @@ def check_tasks(options, login_info):
         options.passwd = tuple(filter(None, options.passwd))
 
     if "--replacement" in options.extras:
-        from logidoor.data.passgen import replacement
+        from logidoor.old.data.passgen import replacement
         final_passwd = ""
         for line in options.passwd:
             final_passwd += "\n".join(list(replacement(line)))
         options.passwd = final_passwd.split("\n")
 
     elif "--toggle_case" in options.extras:
-        from logidoor.data.passgen import toggle_case
+        from logidoor.old.data.passgen import toggle_case
         final_passwd = ""
         for line in options.passwd:
             final_passwd += "\n".join(list(toggle_case(line)))

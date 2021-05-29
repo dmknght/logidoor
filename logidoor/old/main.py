@@ -18,11 +18,11 @@ def attack(options, loginInfo):
 
     ### SETTING UP FOR NEW ATTACK ###
     if options.attack_mode == "--httpget":
-        from logidoor.modules.brute import basic_auth
+        from logidoor.old.modules.brute import basic_auth
         attack_module = basic_auth.submit
 
     elif options.attack_mode == "--loginbrute":
-        from logidoor.modules.brute import loginbrute
+        from logidoor.old.modules.brute import loginbrute
         attack_module = loginbrute.submit
     else:
         raise (ValueError, "Invalid attack mode")
@@ -106,10 +106,11 @@ def attack(options, loginInfo):
 
 if __name__ == "__main__":
     import sys, time, ssl
-    from logidoor.libs.cores import check, options
-    from logidoor.libs import utils
-    from logidoor.libs.utils import progressbar, banners, events
-    from logidoor.modules.extras import getproxy, reauth
+    from logidoor.old.libs.cores import options, check
+    from logidoor.old.libs import utils
+    from logidoor.old.libs import progressbar
+    from logidoor.old.libs.utils import events, banners
+    from logidoor.old.modules.extras import reauth, getproxy
 
     try:
         import traceback

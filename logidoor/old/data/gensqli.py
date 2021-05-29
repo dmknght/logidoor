@@ -1,4 +1,4 @@
-from logidoor.libs.cores import list_choose_randomly, string_gen_randomly
+from logidoor.old.libs.cores import list_choose_randomly, string_gen_randomly
 
 
 def truecon():

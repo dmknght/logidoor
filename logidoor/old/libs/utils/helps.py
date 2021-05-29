@@ -1,5 +1,5 @@
 import sys
-from logidoor.libs import utils
+from logidoor.old.libs import utils
 
 
 def print_fast_help():

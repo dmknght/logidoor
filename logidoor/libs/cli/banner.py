@@ -1,4 +1,4 @@
-from logidoor.new_libs.cores import _version_
+from logidoor.libs.cores import _version_
 
 
 def program_banner():

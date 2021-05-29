@@ -1,7 +1,7 @@
-from logidoor.libs.utils import events
-from logidoor.libs.cores import list_choose_randomly
-from logidoor.libs.cores import find_login_form
-from logidoor.libs.cores import check_sqlerror, get_redirection
+from logidoor.old.libs.utils import events
+from logidoor.old.libs.cores import list_choose_randomly
+from logidoor.old.libs.cores import find_login_form
+from logidoor.old.libs.cores import check_sqlerror, get_redirection
 
 
 def submit(options, login_field, tryCred, result):
@@ -10,7 +10,7 @@ def submit(options, login_field, tryCred, result):
 	if username in [x[1] for x in list(result.queue)]:
 		return True
 	
-	from logidoor.libs.cores.browser import Browser
+	from logidoor.old.libs.cores.browser import Browser
 	try:
 		proc = Browser()
 		if options.proxy:
@@ -40,7 +40,7 @@ def submit(options, login_field, tryCred, result):
 		
 		resp = proc.form_submit(form_control, form_fields[0], password)
 		
-		from logidoor.libs.cores import get_response_diff
+		from logidoor.old.libs.cores import get_response_diff
 		text_changed, source_changed = get_response_diff(options.txt.decode('utf-8'), resp.content.decode('utf-8'))
 		
 		"""

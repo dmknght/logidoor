@@ -1,10 +1,10 @@
 #https://github.com/rapid7/metasploit-framework/tree/master/data/wordlists
 def sqli_user():
-	from logidoor.data.gensqli import sPayload
+	from logidoor.old.data.gensqli import sPayload
 	return sPayload()
 
 def sqli_pass():
-	from logidoor.libs.cores import string_gen_randomly
+	from logidoor.old.libs.cores import string_gen_randomly
 	return string_gen_randomly(len_min = 5, len_max = 12)
 
 def social_urls():

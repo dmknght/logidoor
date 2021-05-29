@@ -1,6 +1,6 @@
 from mechanicalsoup.stateful_browser import StatefulBrowser
 
-from logidoor import data
+from logidoor.old import data
 import sys
 
 
@@ -10,7 +10,7 @@ def random_user_agent():
     :return: string = agent value (PC)
     """
     # TODO better useragent with library (or create my own - takes time)
-    from logidoor.libs.cores.actions import rand_from_list
+    from logidoor.old.libs.cores.actions import rand_from_list
     return rand_from_list(data.getAgent().split("\n"))
 
 

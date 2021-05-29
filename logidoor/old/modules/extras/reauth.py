@@ -1,9 +1,8 @@
-from logidoor.modules.brute import loginbrute
-import sys
-from logidoor import data
-from logidoor.libs.utils import events
-from logidoor.libs.cores.browser import Browser
-from logidoor.libs.cores.check import find_login_form
+from logidoor.old.modules.brute import loginbrute
+from logidoor.old import data
+from logidoor.old.libs.utils import events
+from logidoor.old.libs.cores.browser import Browser
+from logidoor.old.libs.cores.check import find_login_form
 
 try:
     from Queue import Queue
@@ -91,5 +90,5 @@ def run(options, creds):
         if len(result) == 0:
             events.error("No valid account found", "RESULT")
         else:
-            from logidoor.libs.utils import print_table
+            from logidoor.old.libs.utils import print_table
             print_table(("Target", "Username", "Password"), *result)

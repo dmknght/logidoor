@@ -1,7 +1,7 @@
 import re
 import sys
 
-from logidoor.libs.utils import events
+from logidoor.old.libs.utils import events
 
 
 def check_sqlerror(response):

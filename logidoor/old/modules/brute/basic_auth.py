@@ -1,6 +1,6 @@
-from logidoor.libs.cores.browser import Browser
-from logidoor.libs.utils import events
-from logidoor.libs.cores import list_choose_randomly
+from logidoor.old.libs.cores.browser import Browser
+from logidoor.old.libs.utils import events
+from logidoor.old.libs.cores import list_choose_randomly
 
 
 # https://stackoverflow.com/a/4089075
