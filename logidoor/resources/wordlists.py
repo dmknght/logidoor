@@ -9,7 +9,7 @@ def webshell_user():
     dn
     b374k
     abcdef1234567890abcdef1234567890
-    Benutzername"""
+    Benutzername""".replace("\n    ", "\n")
 
 
 def webshell_pass():
@@ -52,7 +52,7 @@ def webshell_pass():
     monkey
     xaishell
     con7extshell
-    dexter"""
+    dexter""".replace("\n    ", "\n")
 
 
 def router_user():
@@ -270,7 +270,7 @@ def router_user():
     write
     xd
     xxx
-    ZXDSL""".replace("\t", "")
+    ZXDSL""".replace("\n    ", "\n")
 
 
 def router_pass():
@@ -639,7 +639,7 @@ def router_pass():
     Zte521
     zte9x15
     ZXDSL
-    zyad1234""".replace("\t", "")
+    zyad1234""".replace("\n    ", "\n")
 
 
 def unix_user():
@@ -753,7 +753,7 @@ def unix_user():
     xpdb
     xpopr
     zabbix
-    vagrant""".replace("\t", "")
+    vagrant""".replace("\n    ", "\n")
 
 
 def unix_pass():
@@ -1765,7 +1765,7 @@ def unix_pass():
     arcsight
     MargaretThatcheris110%SEXY
     karaf
-    vagrant""".replace("\t", "")
+    vagrant""".replace("\n    ", "\n")
 
 
 def tomcat_user():
@@ -1774,7 +1774,7 @@ def tomcat_user():
     role1
     root
     tomcat
-    both""".replace("\t", "")
+    both""".replace("\n    ", "\n")
 
 
 def tomcat_pass():
@@ -1784,12 +1784,12 @@ def tomcat_pass():
     root
     tomcat
     s3cret
-    vagrant""".replace("\t", "")
+    vagrant""".replace("\n    ", "\n")
 
 
 def cctv_user():
     return """admin
-    user""".replace("\t", "")
+    user""".replace("\n    ", "\n")
 
 
 def cctv_pass():
@@ -1858,7 +1858,7 @@ def cctv_pass():
     password
     admin
     administrator
-    root""".replace("\t", "")
+    root""".replace("\n    ", "\n")
 
 
 def mirai_user():
@@ -1876,7 +1876,7 @@ def mirai_user():
     support
     tech
     ubnt
-    user""".replace("\t", "")
+    user""".replace("\n    ", "\n")
 
 
 def mirai_pass():
@@ -1922,7 +1922,7 @@ def mirai_pass():
     xc3511
     xmhdipc
     zlxx.
-    Zte521""".replace("\t", "")
+    Zte521""".replace("\n    ", "\n")
 
 
 def http_user():
@@ -1939,7 +1939,7 @@ def http_user():
     wampp
     newuser
     xampp-dav-unsecure
-    vagrant""".replace("\t", "")
+    vagrant""".replace("\n    ", "\n")
 
 
 def http_pass():
@@ -1961,7 +1961,7 @@ def http_pass():
     wampp
     ppmax2011
     turnkey
-    vagrant""".replace("\t", "")
+    vagrant""".replace("\n    ", "\n")
 
 
 def default_user():
@@ -1974,7 +1974,7 @@ def default_user():
     test
     test123
     demo
-    sysadmin""".replace("\t", "")
+    sysadmin""".replace("\n    ", "\n")
 
 
 def default_pass():
@@ -2036,4 +2036,4 @@ def default_pass():
     1122334411223344
     P4ssw0rd
     sysadmin
-    qwerty123@""".replace("\t", "")
+    qwerty123@""".replace("\n    ", "\n")
