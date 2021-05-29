@@ -120,8 +120,8 @@ class ProgOptions:
     def __validate_user_list(self):
         if self.user_options.username:
             return set([self.user_options.username])
-        elif self.user_options.pre_user_list:
-            return set(file_read(self.user_options.pre_user_list.split("\n")))
+        elif self.user_options.user_list:
+            return set(file_read(self.user_options.user_list.split("\n")))
         elif self.user_options.pre_user_list:
             if self.user_options.pre_user_list in pre_user_list:
                 module = importlib.import_module("logindoor.resources.wordlists." +
@@ -142,8 +142,8 @@ class ProgOptions:
     def __validate_pass_list(self):
         if self.user_options.password:
             return set([self.user_options.password])
-        elif self.user_options.pre_pass_list:
-            return set(file_read(self.user_options.pre_pass_list.split("\n")))
+        elif self.user_options.pass_list:
+            return set(file_read(self.user_options.pass_list.split("\n")))
         elif self.user_options.pre_pass_list:
             if self.user_options.pre_pass_list in pre_passwd_list:
                 module = importlib.import_module("logindoor.resources.wordlists." +
