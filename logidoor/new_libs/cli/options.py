@@ -105,7 +105,7 @@ class ProgOptions:
 
     def __validate_url_option(self):
         def validate_url_format(url):
-            if not url.startsWith("http"):
+            if not url.startswith("http"):
                 return "http://" + url
             else:
                 return url
@@ -113,13 +113,13 @@ class ProgOptions:
         if self.user_options.url_list:
             return set([validate_url_format(x) for x in self.user_options.url_list])
         elif self.user_options.url:
-            return set(validate_url_format(self.user_options.url))
+            return set([validate_url_format(self.user_options.url)])
         else:
             raise ValueError("URL address is required")
 
     def __validate_user_list(self):
-        if self.user_options.user_name:
-            return set(self.user_options.user_name)
+        if self.user_options.username:
+            return set([self.user_options.username])
         elif self.user_options.pre_user_list:
             return set(file_read(self.user_options.pre_user_list.split("\n")))
         elif self.user_options.pre_user_list:
@@ -141,7 +141,7 @@ class ProgOptions:
 
     def __validate_pass_list(self):
         if self.user_options.password:
-            return set(self.user_options.password)
+            return set([self.user_options.password])
         elif self.user_options.pre_pass_list:
             return set(file_read(self.user_options.pre_pass_list.split("\n")))
         elif self.user_options.pre_pass_list:
