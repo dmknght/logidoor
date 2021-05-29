@@ -107,13 +107,18 @@ class ProgOptions:
 
     def __validate_url_option(self):
         def validate_url_format(url):
+            if not url:
+                return url
             if not url.startswith("http"):
                 return "http://" + url
             else:
                 return url
 
         if self.user_options.url_list:
-            return set([validate_url_format(x) for x in self.user_options.url_list])
+            return set(filter(
+                None,
+                [validate_url_format(x) for x in file_read(self.user_options.url_list).split("\n")]
+            ))
         elif self.user_options.url:
             return {validate_url_format(self.user_options.url)}
         else:
