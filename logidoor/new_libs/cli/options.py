@@ -1,5 +1,4 @@
 import argparse
-import importlib
 from logidoor.resources import wordlists
 from logidoor.new_libs.cores import *
 
@@ -124,16 +123,14 @@ class ProgOptions:
             return set(filter(None, file_read(self.user_options.user_list).split("\n")))
         elif self.user_options.pre_user_list:
             if self.user_options.pre_user_list in pre_user_list:
-                module = importlib.import_module("../../resources.wordlists." +
-                                                 self.user_options.pre_user_list + "_user")
-                return set(module())
+                module = getattr(wordlists, f"{self.user_options.pre_user_list}_pass")
+                return set(module().split("\n"))
             else:
                 raise ValueError("Invalid name of prebuild username wordlist")
         elif self.user_options.pre_wordlist:
             if self.user_options.pre_wordlist in pre_usr_passwd_lists:
-                module = importlib.import_module("resources.wordlists." +
-                                                 self.user_options.pre_wordlist + "_user")
-                return set(module())
+                module = getattr(wordlists, f"{self.user_options.pre_wordlist}_pass")
+                return set(module().split("\n"))
             else:
                 raise ValueError("Invalid name of prebuild username wordlist")
         else:
@@ -146,16 +143,14 @@ class ProgOptions:
             return set(filter(None, file_read(self.user_options.pass_list).split("\n")))
         elif self.user_options.pre_pass_list:
             if self.user_options.pre_pass_list in pre_passwd_list:
-                module = importlib.import_module("../../resources.wordlists." +
-                                                 self.user_options.pre_pass_list + "_pass")
-                return set(module())
+                module = getattr(wordlists, f"{self.user_options.pre_pass_list}_pass")
+                return set(module().split("\n"))
             else:
                 raise ValueError("Invalid name of prebuild password wordlist")
         elif self.user_options.pre_wordlist:
             if self.user_options.pre_wordlist in pre_usr_passwd_lists:
-                module = importlib.import_module("resources.wordlists." +
-                                                 self.user_options.pre_wordlist + "_pass")
-                return set(module())
+                module = getattr(wordlists, f"{self.user_options.pre_wordlist}_pass")
+                return set(module().split("\n"))
             else:
                 raise ValueError("Invalid name of prebuild password wordlist")
         else:
