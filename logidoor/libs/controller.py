@@ -2,27 +2,26 @@ import threading
 import queue
 
 from logidoor.libs.browser import Browser
-# from logidoor.libs.cli.progressbar import printg
+from logidoor.libs.cli.progressbar import printg
+from logidoor.libs.cli.printf import *
 
 
 def send_login(browser, url, username, password, result):
     # resp = browser.login(username, password)
-    # if not browser.login_form.entry_text:
-    #     # printg(f"Password: \033[95m{password}\033[0m"
-    #     printg(f"Password: {password}")
-    # else:
-    #     # printg(f"Username: \033[96m{username}\033[0m Password: \033[95m{password}\033[0m")
-    #     printg(f"Username: {username} Password: {password}")
+    if not browser.login_form.entry_text:
+        printg(f"Password: \033[95m{password}\033[0m")
+    else:
+        printg(f"Username: \033[96m{username}\033[0m Password: \033[95m{password}\033[0m")
     browser.login(username, password)
     # TODO analysis more from here
     if not browser.find_login_form():
         if browser.login_form.entry_text:
-            print(f"Found: {username}:{password}")
+            found(username, password)
             result.put([url, username, password])
             return True
         else:
-            print(f"Found: {password}")
-            result.put([url, "", password])
+            found(None, password)
+            result.put([url, None, password])
             return True
     else:
         return False
@@ -37,7 +36,6 @@ def run_threads(threads):
 
 
 def setup_threads(browser, url, options):
-    # FIXME solve a bottleneck problem
     workers = []
     result = queue.Queue()
 
@@ -60,14 +58,17 @@ def setup_threads(browser, url, options):
 
 def do_attack(options):
     for url in options.url:
-        print(f"Attacking {url}")
+        print(f"Attacking \033[94m{url}\033[0m")
         browser = Browser()
         try:
             browser.open(url)
             login_form = browser.find_login_form()
             if login_form:
                 browser.login_form = login_form
-                setup_threads(browser, url, options)
+                if browser.login_form.entry_text and not options.userlist:
+                    print(f"Username is required for {url}")
+                else:
+                    setup_threads(browser, url, options)
             else:
                 print(f"No login form is found at {url}")
         except KeyboardInterrupt:

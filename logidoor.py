@@ -11,5 +11,4 @@ if __name__ == "__main__":
     do_attack(prog_options)
 
     runtime = datetime.now() - runtime
-    print(f"Elapsed: {runtime}")
-
+    print(f"\n\033[97mElapsed\033[0m: \033[37m{runtime}\033[0m")
