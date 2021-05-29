@@ -16,4 +16,4 @@ def print_found(username, password):
 
 def print_attack(url):
     __clean()
-    print(f"Attacking \033[94m{url}\033[0m")
+    print(f"Attacking \033[94m{url:65.65}\033[0m")

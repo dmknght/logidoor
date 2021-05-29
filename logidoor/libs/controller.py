@@ -11,7 +11,7 @@ def send_login(browser, url, username, password, result):
     # Limit length of string using format
     # https://stackoverflow.com/a/24076314
     if not browser.login_form.entry_text:
-        printg(f"Password: \033[95m{password:29.29}\033[0m")
+        printg(f"Password: \033[95m{password:50.50}\033[0m")
     else:
         printg(f"Username: \033[96m{username:29.29}\033[0m Password: \033[95m{password:29.29}\033[0m")
     browser.login(username, password)
