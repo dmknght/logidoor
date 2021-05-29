@@ -162,7 +162,8 @@ class ProgOptions:
             else:
                 raise ValueError("Invalid name of prebuild password wordlist")
         else:
-            raise ValueError("Password is required")
+            module = getattr(wordlists, "default_pass")
+            return set(module().split("\n"))
 
     def __validate_threads(self):
         try:
