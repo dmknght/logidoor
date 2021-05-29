@@ -17,7 +17,6 @@ class Browser(stateful_browser.StatefulBrowser):
         super().__init__(*args, **kwargs)
 
     def find_login_form(self):
-        # TODO get form id for latest version of mechanicalsoup
         for form in self.page.find_all("form"):
             current_form = Form()
             current_form.name = form.get('name')
