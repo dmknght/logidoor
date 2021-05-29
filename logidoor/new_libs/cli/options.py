@@ -99,11 +99,11 @@ def parse_options():
 class ProgOptions:
     def __init__(self, user_options):
         self.user_options = user_options
-        self.url = self.validate_url_option()
-        self.userlist = self.validate_user_list()
-        self.passlist = self.validate_pass_list()
+        self.url = self.__validate_url_option()
+        self.userlist = self.__validate_user_list()
+        self.passlist = self.__validate_pass_list()
 
-    def validate_url_option(self):
+    def __validate_url_option(self):
         def validate_url_format(url):
             if not url.startsWith("http"):
                 return "http://" + url
@@ -117,7 +117,7 @@ class ProgOptions:
         else:
             raise ValueError("URL address is required")
 
-    def validate_user_list(self):
+    def __validate_user_list(self):
         if self.user_options.user_name:
             return set(self.user_options.user_name)
         elif self.user_options.pre_user_list:
@@ -139,7 +139,7 @@ class ProgOptions:
         else:
             raise ValueError("Username is required")
 
-    def validate_pass_list(self):
+    def __validate_pass_list(self):
         if self.user_options.password:
             return set(self.user_options.password)
         elif self.user_options.pre_pass_list:
@@ -161,7 +161,7 @@ class ProgOptions:
         else:
             raise ValueError("Password is required")
 
-    def validate_threads_options(self):
+    def __validate_threads_options(self):
         pass
 
 #     def blacklist(self):
