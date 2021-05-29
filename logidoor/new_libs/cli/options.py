@@ -136,8 +136,8 @@ class ProgOptions:
                 return set(module().split("\n"))
             else:
                 raise ValueError("Invalid name of prebuild username wordlist")
-        else:
-            raise ValueError("Username is required")
+        # else:
+        #     raise ValueError("Username is required")
 
     def __validate_pass_list(self):
         if self.user_options.password:
