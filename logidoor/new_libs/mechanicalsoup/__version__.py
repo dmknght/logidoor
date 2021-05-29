@@ -1,6 +1,6 @@
 """
 A modified python3-mechanicalsoup for local usage
-The new name is mechsoup to avoid import conflic
+The new name is mechanicalsoup to avoid import conflic
 Modifier: Nong Hoang Tu <dmknght@parrotsec.org>
 
 Original source: https://github.com/MechanicalSoup/MechanicalSoup
@@ -30,11 +30,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from .utils import LinkNotFoundError
-from .browser import Browser
-from .form import Form, InvalidFormMethod
-from .stateful_browser import StatefulBrowser
-from .__version__ import __version__
-
-__all__ = ['StatefulBrowser', 'LinkNotFoundError', 'Browser', 'Form',
-           'InvalidFormMethod', '__version__']
+__title__ = 'MechanicalSoup'
+__description__ = 'A Python library for automating interaction with websites'
+__url__ = 'https://mechanicalsoup.readthedocs.io/'
+__github_url__ = 'https://github.com/MechanicalSoup/MechanicalSoup'
+__version__ = '1.0.0'
+__license__ = 'MIT'
+__github_assets_absoluteURL__ = """\
+https://raw.githubusercontent.com/MechanicalSoup/MechanicalSoup/master"""

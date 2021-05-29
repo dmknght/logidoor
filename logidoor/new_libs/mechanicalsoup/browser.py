@@ -1,6 +1,6 @@
 """
 A modified python3-mechanicalsoup for local usage
-The new name is mechsoup to avoid import conflic
+The new name is mechanicalsoup to avoid import conflic
 Modifier: Nong Hoang Tu <dmknght@parrotsec.org>
 
 Original source: https://github.com/MechanicalSoup/MechanicalSoup
@@ -186,7 +186,7 @@ class Browser(object):
         method = str(form.get("method", "get"))
         action = form.get("action")
         url = urllib.parse.urljoin(url, action)
-        if url == None:  # This happens when both `action` and `url` are None.
+        if not url:  # This happens when both `action` and `url` are None.
             raise ValueError('no URL to submit to')
 
         # read https://www.w3.org/TR/html52/sec-forms.html

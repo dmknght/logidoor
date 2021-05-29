@@ -1,6 +1,6 @@
 """
 A modified python3-mechanicalsoup for local usage
-The new name is mechsoup to avoid import conflic
+The new name is mechanicalsoup to avoid import conflic
 Modifier: Nong Hoang Tu <dmknght@parrotsec.org>
 
 Original source: https://github.com/MechanicalSoup/MechanicalSoup
@@ -72,7 +72,7 @@ class StatefulBrowser(Browser):
 
     Examples ::
 
-        browser = mechsoup.StatefulBrowser(
+        browser = mechanicalsoup.StatefulBrowser(
             soup_config={'features': 'lxml'},  # Use the lxml HTML parser
             raise_on_404=True,
             user_agent='MyBot/0.1: mysite.example.com/bot_info',

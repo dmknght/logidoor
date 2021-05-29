@@ -1,6 +1,6 @@
 """
 A modified python3-mechanicalsoup for local usage
-The new name is mechsoup to avoid import conflic
+The new name is mechanicalsoup to avoid import conflic
 Modifier: Nong Hoang Tu <dmknght@parrotsec.org>
 
 Original source: https://github.com/MechanicalSoup/MechanicalSoup
@@ -348,7 +348,7 @@ class Form(object):
 
         Example: ::
 
-            browser = mechsoup.StatefulBrowser()
+            browser = mechanicalsoup.StatefulBrowser()
             browser.open(url)
             form = browser.select_form()
             form.choose_submit('form_name_attr')

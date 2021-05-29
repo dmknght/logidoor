@@ -1,6 +1,6 @@
 """
 A modified python3-mechanicalsoup for local usage
-The new name is mechsoup to avoid import conflic
+The new name is mechanicalsoup to avoid import conflic
 Modifier: Nong Hoang Tu <dmknght@parrotsec.org>
 
 Original source: https://github.com/MechanicalSoup/MechanicalSoup
@@ -31,11 +31,11 @@ SOFTWARE.
 """
 
 class LinkNotFoundError(Exception):
-    """Exception raised when mechsoup fails to find something.
+    """Exception raised when mechanicalsoup fails to find something.
 
     This happens in situations like (non-exhaustive list):
 
-    * :func:`~mechsoup.StatefulBrowser.find_link` is called, but
+    * :func:`~mechanicalsoup.StatefulBrowser.find_link` is called, but
       no link is found.
 
     * The browser was configured with raise_on_404=True and a 404
