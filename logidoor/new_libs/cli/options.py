@@ -45,14 +45,15 @@ def parse_options():
         "-t",
         "--threads",
         type=int,
-        help="Number of threads"
+        help="Number of threads",
+        default=16
     )
 
     group_wordlist = parser.add_argument_group("Wordlist")
     group_wordlist.add_argument(
         "-un",
         "--username",
-        help="Username"
+        help="Username. Support multiple user by :"
     )
     group_wordlist.add_argument(
         "-uF",
@@ -101,6 +102,7 @@ class ProgOptions:
         self.url = self.__validate_url_option()
         self.userlist = self.__validate_user_list()
         self.passlist = self.__validate_pass_list()
+        self.threads = self.__validate_threads()
 
     def __validate_url_option(self):
         def validate_url_format(url):
@@ -118,7 +120,7 @@ class ProgOptions:
 
     def __validate_user_list(self):
         if self.user_options.username:
-            return {self.user_options.username}
+            return set(self.user_options.username.split(":"))
         elif self.user_options.user_list:
             return set(filter(None, file_read(self.user_options.user_list).split("\n")))
         elif self.user_options.pre_user_list:
@@ -156,8 +158,11 @@ class ProgOptions:
         else:
             raise ValueError("Password is required")
 
-    def __validate_threads_options(self):
-        pass
+    def __validate_threads(self):
+        try:
+            return int(self.user_options.threads)
+        except Exception:
+            raise Exception("Invalid thread options")
 
 #     def blacklist(self):
 #         """
