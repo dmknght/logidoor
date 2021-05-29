@@ -37,10 +37,8 @@ def run_threads(threads):
         thread.join()
 
 
-def setup_threads(browser, url, options):
+def setup_threads(browser, url, options, result):
     workers = []
-    result = queue.Queue()
-
     for username in options.userlist:
         for password in options.passlist:
             if len(workers) == options.threads:
@@ -58,7 +56,27 @@ def setup_threads(browser, url, options):
         del workers[:]
 
 
+def setup_threads_no_username(browser, url, options, result):
+    workers = []
+    for password in options.passlist:
+        if len(workers) == options.threads:
+            # When login is found, we added URL to queue list
+            # We check the URL to detect if login is done
+            if url in [check_urls[0] for check_urls in list(result.queue)]:
+                return
+            run_threads(workers)
+            del workers[:]
+        worker = threading.Thread(target=send_login, args=(browser, url, None, password, result))
+        worker.daemon = True
+        workers.append(worker)
+    if workers:
+        run_threads(workers)
+        del workers[:]
+
+
 def do_attack(options):
+    result = queue.Queue()
+
     for url in options.url:
         print_attack(url)
         browser = Browser()
@@ -67,14 +85,21 @@ def do_attack(options):
             login_form = browser.find_login_form()
             if login_form:
                 browser.login_form = login_form
-                if browser.login_form.entry_text and not options.userlist:
-                    print(f"Username is required for {url}")
+                if browser.login_form.entry_text:
+                    # If login form contains both entry_text and entry_password
+                    if not options.userlist:
+                        print_error(f"Username is required for current URL")
+                    else:
+                        setup_threads(browser, url, options, result)
                 else:
-                    setup_threads(browser, url, options)
+                    # Only password, we setup different
+                    setup_threads_no_username(browser, url, options, result)
             else:
-                print(f"No login form is found at {url}")
+                print_no_login_found(url)
         except KeyboardInterrupt:
             exit(0)
         finally:
             # TODO print table of login here
             browser.close()
+
+    print_results(list(result.queue))
