@@ -1,6 +1,6 @@
 from datetime import datetime
 from logidoor.libs.cli import options
-from logidoor.libs.controller import do_attack
+from logidoor.controller import do_attack
 from logidoor.libs.cli import banner
 
 if __name__ == "__main__":

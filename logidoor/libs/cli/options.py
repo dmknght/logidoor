@@ -1,6 +1,6 @@
 import argparse
 from logidoor.resources import wordlists
-from logidoor.libs.cores import *
+from logidoor.libs.utils import *
 
 
 def get_wordlists():
