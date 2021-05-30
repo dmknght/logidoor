@@ -1,3 +1,4 @@
+import re
 from logidoor.libs.mechanicalsoup import stateful_browser
 
 
@@ -9,13 +10,17 @@ class Form:
         self.entry_text = []
         self.entry_password = []
         self.submit_button = []
-        self.first_page = ""
-        self.first_title = ""
 
 
 class Browser(stateful_browser.StatefulBrowser):
     def __init__(self, *args, **kwargs):
         self.login_form = None
+        self.first_page = ""
+        self.first_title = ""
+        self.blacklist_extensions = (
+            ".css", ".js", ".jpg", ".png", ".jpeg", ".doc", ".docx", ".xlsx", ".pdf", ".txt", ".rar", ".bak", ".zip",
+            ".7z"
+        )
         super().__init__(*args, **kwargs)
 
     def find_login_form(self):
@@ -57,3 +62,31 @@ class Browser(stateful_browser.StatefulBrowser):
         self[entry] = password
 
         return self.submit_selected()
+
+    def page_redirection(self):
+        """
+            Analysis all redirection request in html response via meta tag, windows.location or href
+            :return: list of string = all possible URL
+            """
+        regex_js = r"[window\.]?location(?:.*)=[ \'\"]?([a-zA-Z\._\/]+)[ \'\"]?"
+        regex_meta = r"<meta[^>]*?url=(.*?)[\"\']"
+        regex_href = r"href=[\'\"]?([^\'\" >]+)"
+
+        url = list(set(re.findall(regex_meta, self.page)))
+        if url:
+            return url
+
+        url = list(set(re.findall(regex_js, self.page)))
+        if url:
+            return url
+
+        url = list(set(re.findall(regex_href, self.page)))
+        return url
+
+    def check_login_redirection(self):
+        for new_url in self.page_redirection():
+            if not new_url.endswith(self.blacklist_extensions):  # maybe it can be URL of file with args
+                self.open(new_url)
+                if self.find_login_form():
+                    return True
+        return False
