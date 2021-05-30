@@ -10,7 +10,6 @@ def send_ftp_auth(session, url, username, password, result):
         session.connect(url.split("/")[2])
         printg(f"Username: \033[96m{username:29.29}\033[0m Password: \033[95m{password:29.29}\033[0m")
         session.login(user=username, passwd=password)
-        session.close()
         print_found(username, password)
         result.put([url, username, password])
 
@@ -19,6 +18,8 @@ def send_ftp_auth(session, url, username, password, result):
     except:
         # Error here better to show
         pass
+    finally:
+        session.close()
 
 
 def check_anonymous_login(session, url):
@@ -34,3 +35,5 @@ def check_anonymous_login(session, url):
     except:
         # Error here better to show
         pass
+    finally:
+        session.close()
