@@ -11,7 +11,6 @@ def http_attack(url, options, result):
         from logidoor.modules import http_attack
         resp = browser.open(url)
         target = http_attack.send_form_auth
-        print(resp.status_code)
         if resp.status_code == 401:
             target = http_attack.send_basic_auth
             setup_threads(browser, url, options, result, target=target)
