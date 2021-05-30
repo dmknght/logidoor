@@ -109,7 +109,8 @@ class ProgOptions:
         def validate_url_format(url):
             if not url:
                 return url
-            if not url.startswith("http"):
+            # if not url.startswith("http"):
+            if "://" not in url:
                 return "http://" + url
             else:
                 return url

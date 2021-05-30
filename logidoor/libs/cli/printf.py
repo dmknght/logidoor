@@ -19,6 +19,11 @@ def print_error(text):
     print(f"  [\033[91mERR\033[0m] {text}")
 
 
+def print_warn(text):
+    __clean()
+    print(f"  [\033[97m!\033[0m] {text}")
+
+
 def print_attack(url):
     __clean()
     print(f"Attacking \033[94m{url:65.65}\033[0m")

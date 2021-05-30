@@ -2,43 +2,8 @@ import threading
 import queue
 
 from logidoor.libs.browser import Browser
-from logidoor.libs.cli.progressbar import printg
+# from logidoor.libs.cli.progressbar import printg
 from logidoor.libs.cli.printf import *
-
-
-def send_login(browser, url, username, password, result):
-    # resp = browser.login(username, password)
-    # Limit length of string using format
-    # https://stackoverflow.com/a/24076314
-    if not browser.login_form.entry_text:
-        printg(f"Password: \033[95m{password:50.50}\033[0m")
-    else:
-        printg(f"Username: \033[96m{username:29.29}\033[0m Password: \033[95m{password:29.29}\033[0m")
-    browser.login(username, password)
-    # TODO analysis more from here
-    if not browser.find_login_form():
-        if browser.login_form.entry_text:
-            print_found(username, password)
-            result.put([url, username, password])
-            return True
-        else:
-            print_found(None, password)
-            result.put([url, None, password])
-            return True
-    else:
-        return False
-
-
-def send_basic_auth(browser, url, username, password, result):
-    printg(f"Username: \033[96m{username:29.29}\033[0m Password: \033[95m{password:29.29}\033[0m")
-    resp = browser.open(url, auth=(username, password))
-    if resp.status_code == 401:
-        pass
-    elif resp.status_code >= 400:
-        print_error(f"{resp.status_code} for \"\033[96m{username}\033[0m\":\"\033[95m{password}\033[0m\"")
-    else:
-        print_found(username, password)
-        result.put([url, username, password])
 
 
 def run_threads(threads):
@@ -49,7 +14,7 @@ def run_threads(threads):
         thread.join()
 
 
-def setup_threads(browser, url, options, result, target=send_login):
+def setup_threads(browser, url, options, result, target):
     workers = []
     for username in options.userlist:
         for password in options.passlist:
@@ -68,7 +33,7 @@ def setup_threads(browser, url, options, result, target=send_login):
         del workers[:]
 
 
-def setup_threads_no_username(browser, url, options, result):
+def setup_threads_no_username(browser, url, options, result, target):
     workers = []
     for password in options.passlist:
         if len(workers) == options.threads:
@@ -78,7 +43,7 @@ def setup_threads_no_username(browser, url, options, result):
                 return
             run_threads(workers)
             del workers[:]
-        worker = threading.Thread(target=send_login, args=(browser, url, None, password, result))
+        worker = threading.Thread(target=target, args=(browser, url, None, password, result))
         worker.daemon = True
         workers.append(worker)
     if workers:
@@ -86,34 +51,59 @@ def setup_threads_no_username(browser, url, options, result):
         del workers[:]
 
 
+def http_attack(url, options, result):
+    browser = Browser()
+    try:
+        from logidoor.modules import http_attack
+        resp = browser.open(url)
+        target = http_attack.send_form_auth
+        if resp.status_code == 401:
+            target = http_attack.send_basic_auth
+        login_form = browser.find_login_form()
+        if login_form:
+            browser.login_form = login_form
+            if browser.login_form.entry_text:
+                # If login form contains both entry_text and entry_password
+                if not options.userlist:
+                    print_error(f"Username is required for current URL")
+                else:
+                    setup_threads(browser, url, options, result, target=target)
+            else:
+                # Only password, we setup different
+                setup_threads_no_username(browser, url, options, result, target)
+        else:
+            print_no_login_found(url)
+    except KeyboardInterrupt:
+        exit(0)
+    finally:
+        browser.close()
+
+
+def ftp_attack(url, options, result):
+    if not options.userlist:
+        print_error(f"Username is required for FTP protocol")
+        return
+    from ftplib import FTP
+    from logidoor.modules.ftp_attack import send_ftp_auth, check_anonymous_login
+
+    session = FTP()
+
+    check_anonymous_login(session, url)
+
+    target = send_ftp_auth
+    setup_threads(session, url, options, result, target)
+
+
 def do_attack(options):
     result = queue.Queue()
 
     for url in options.url:
         print_attack(url)
-        browser = Browser()
-        try:
-            resp = browser.open(url)
-            if resp.status_code == 401:
-                setup_threads(browser, url, options, result, target=send_basic_auth)
-            else:
-                login_form = browser.find_login_form()
-                if login_form:
-                    browser.login_form = login_form
-                    if browser.login_form.entry_text:
-                        # If login form contains both entry_text and entry_password
-                        if not options.userlist:
-                            print_error(f"Username is required for current URL")
-                        else:
-                            setup_threads(browser, url, options, result)
-                    else:
-                        # Only password, we setup different
-                        setup_threads_no_username(browser, url, options, result)
-                else:
-                    print_no_login_found(url)
-        except KeyboardInterrupt:
-            exit(0)
-        finally:
-            browser.close()
+        if url.startswith(("http://", "https")):
+            http_attack(url, options, result)
+        elif url.startswith("ftp://"):
+            ftp_attack(url, options, result)
+        else:
+            print_error(f"Protocol {url.split('/')[0]} is not supported")
 
     print_results(list(result.queue))
