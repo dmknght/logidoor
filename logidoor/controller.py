@@ -10,6 +10,8 @@ def http_attack(url, options, result):
     try:
         from logidoor.modules import http_attack
         resp = browser.open(url)
+        browser.first_page = browser.page
+        browser.first_title = browser.page.title.text
         target = http_attack.send_form_auth
         if resp.status_code == 401:
             target = http_attack.send_basic_auth

@@ -9,6 +9,8 @@ class Form:
         self.entry_text = []
         self.entry_password = []
         self.submit_button = []
+        self.first_page = ""
+        self.first_title = ""
 
 
 class Browser(stateful_browser.StatefulBrowser):
@@ -46,12 +48,12 @@ class Browser(stateful_browser.StatefulBrowser):
             raise AttributeError("Login form has no name, action or method to select")
 
         if self.login_form.entry_text:
-            entry = self.login_form.entry_text[0][0] if self.login_form.entry_text[0][0] else\
-                self.login_form.entry_text[0][1]
+            entry = self.login_form.entry_text[0][1] if self.login_form.entry_text[0][1] else\
+                self.login_form.entry_text[0][0]
             self[entry] = username
 
-        entry = self.login_form.entry_password[0][0] if self.login_form.entry_password[0][0] else \
-            self.login_form.entry_password[0][1]
+        entry = self.login_form.entry_password[0][1] if self.login_form.entry_password[0][1] else \
+            self.login_form.entry_password[0][0]
         self[entry] = password
 
         return self.submit_selected()
