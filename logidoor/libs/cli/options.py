@@ -171,12 +171,3 @@ class ProgOptions:
             return int(self.user_options.threads)
         except Exception:
             raise Exception("Invalid thread options")
-
-#     def blacklist(self):
-#         """
-#         List of extensions on web that we don't open to save time
-#         :return: a tuple (save a little memory) of common extensions
-#         """
-#         return (
-#             ".css", ".js", ".jpg", ".png", ".jpeg", ".doc", ".docx", ".xlsx", ".pdf", ".txt", ".rar", ".bak", ".zip",
-#             ".7z")
