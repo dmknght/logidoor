@@ -31,11 +31,11 @@ class Browser(stateful_browser.StatefulBrowser):
             current_form.action = form.get('action')
             for entry in form.find_all(("input", "textarea", "select", "button")):
                 entry_type = entry.get('type')
-                if entry_type == "text":
+                if entry_type.lower() == "text":
                     current_form.entry_text.append((entry.get('id'), entry.get('name')))
-                elif entry_type == "password":
+                elif entry_type.lower() == "password":
                     current_form.entry_password.append((entry.get('id'), entry.get('name')))
-                elif entry_type == "submit":
+                elif entry_type.lower() == "submit":
                     current_form.submit_button.append((entry.get('id'), entry.get('name'), entry.get('value')))
 
             if len(current_form.entry_password) == 1:
