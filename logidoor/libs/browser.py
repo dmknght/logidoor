@@ -84,9 +84,3 @@ class Browser(stateful_browser.StatefulBrowser):
 
         return result
 
-    # def check_login_redirection(self):
-    #     for new_url in self.get_page_redirection():
-    #         self.follow_link(new_url)
-    #         if self.find_login_form():
-    #             return True
-    #     return False
