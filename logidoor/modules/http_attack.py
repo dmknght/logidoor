@@ -38,7 +38,7 @@ def send_form_auth(browser, url, username, password, result):
         # convert = html2text.HTML2Text()
         # contents_change = browser.get_page_change(resp.text).strip()
         # new_contents = convert.handle(contents_change).strip()
-        print_info(browser.page.title.text)
+        print_info(f"Title: {browser.page.title.text}")
         print_info(f"HTTP Status code: {resp.status_code}")
         # if new_contents.count("\n") < 2:
         #     print_info(new_contents)
