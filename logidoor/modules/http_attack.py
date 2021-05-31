@@ -16,32 +16,27 @@ def send_form_auth(browser, url, username, password, result):
         return
 
     resp = browser.login(username, password)
+    browser.refresh()
 
-    # TODO analysis more from here
-    # We are going to use score base system
-    # Title page change
-    # No login form
-    # HTML contents change
     if not browser.find_login_form():
         for this_url in browser.get_page_redirection(resp.text):
-            # FIXME shortten url from href
+            # FIXME shorten url from href
             if this_url and this_url.startswith("http"):
                 resp = browser.open(this_url)
                 if browser.find_login_form():
                     return False
 
-        browser.refresh()
-        if browser.find_login_form():
-            return False
-
-        # import html2text
-        # convert = html2text.HTML2Text()
-        # contents_change = browser.get_page_change(resp.text).strip()
-        # new_contents = convert.handle(contents_change).strip()
         print_info(f"Title: {browser.page.title.text}")
         print_info(f"HTTP Status code: {resp.status_code}")
-        # if new_contents.count("\n") < 2:
-        #     print_info(new_contents)
+
+        # A verbose like message to print new contents
+        # When tool gets false positives, attacker knows using the output msg
+        import html2text
+        convert = html2text.HTML2Text()
+        contents_change = browser.get_page_change(resp.text).strip()
+        new_contents = convert.handle(contents_change).strip()
+        if new_contents.count("\n") < 2:
+            print_info(new_contents)
 
         browser.session.cookies.clear()
         browser.session.close()
