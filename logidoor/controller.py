@@ -11,8 +11,11 @@ def http_attack(url, options, result):
         from logidoor.modules import http_attack
         resp = browser.open(url)
 
-        browser.first_page = browser.page
-        browser.first_title = browser.page.title.text
+        # browser.first_page = browser.page
+        # try:
+        #     browser.first_title = browser.page.title.text
+        # except AttributeError:
+        #     browser.first_title = None
         # browser.first_content = convert.handle(resp.text)
         target = http_attack.send_form_auth
 
