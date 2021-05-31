@@ -17,10 +17,10 @@ class Browser(stateful_browser.StatefulBrowser):
         self.login_form = None
         self.first_page = ""
         self.first_title = ""
+        # self.first_content = ""
         self.blacklist_extensions = (
             ".css", ".js", ".jpg", ".png", ".jpeg", ".doc", ".docx", ".xlsx", ".pdf", ".txt", ".rar", ".bak", ".zip",
-            ".7z"
-        )
+            ".7z")
         super().__init__(*args, **kwargs)
 
     def find_login_form(self):
@@ -63,30 +63,30 @@ class Browser(stateful_browser.StatefulBrowser):
 
         return self.submit_selected()
 
-    def page_redirection(self):
+    def get_page_redirection(self, data):
         """
             Analysis all redirection request in html response via meta tag, windows.location or href
             :return: list of string = all possible URL
-            """
+        """
         regex_js = r"[window\.]?location(?:.*)=[ \'\"]?([a-zA-Z\._\/]+)[ \'\"]?"
         regex_meta = r"<meta[^>]*?url=(.*?)[\"\']"
         regex_href = r"href=[\'\"]?([^\'\" >]+)"
+        url = list(set(re.findall(regex_meta, data)))
+        url += list(set(re.findall(regex_js, data)))
+        url += list(set(re.findall(regex_href, data)))
+        return [x for x in url if not x.endswith(self.blacklist_extensions)]
 
-        url = list(set(re.findall(regex_meta, self.page)))
-        if url:
-            return url
+    def get_page_change(self, text):
+        result = ""
+        for line in text.split("\n"):
+            if line not in self.first_page:
+                result += line + "\n"
 
-        url = list(set(re.findall(regex_js, self.page)))
-        if url:
-            return url
+        return result
 
-        url = list(set(re.findall(regex_href, self.page)))
-        return url
-
-    def check_login_redirection(self):
-        for new_url in self.page_redirection():
-            if not new_url.endswith(self.blacklist_extensions):  # maybe it can be URL of file with args
-                self.open(new_url)
-                if self.find_login_form():
-                    return True
-        return False
+    # def check_login_redirection(self):
+    #     for new_url in self.get_page_redirection():
+    #         self.follow_link(new_url)
+    #         if self.find_login_form():
+    #             return True
+    #     return False
