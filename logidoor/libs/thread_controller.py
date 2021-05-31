@@ -21,8 +21,8 @@ def run_threads(threads):
 
 def setup_threads(browser, url, options, result, target):
     workers = []
-    for username in options.userlist:
-        for password in options.passlist:
+    for username in options.user_list:
+        for password in options.pass_list:
             if len(workers) == options.threads:
                 run_threads(workers)
                 del workers[:]
@@ -38,7 +38,7 @@ def setup_threads(browser, url, options, result, target):
 
 def setup_threads_no_username(browser, url, options, result, target):
     workers = []
-    for password in options.passlist:
+    for password in options.pass_list:
         if len(workers) == options.threads:
             # When login is found, we added URL to queue list
             # We check the URL to detect if login is done

@@ -99,10 +99,14 @@ def parse_options():
 class ProgOptions:
     def __init__(self):
         args = parse_options()
+        import sys
+        if len(sys.argv) == 1:
+            args.print_help()
+            exit()
         self.user_options = args.parse_args()
         self.url = self.__validate_url_option()
-        self.userlist = self.__validate_user_list()
-        self.passlist = self.__validate_pass_list()
+        self.user_list = self.__validate_user_list()
+        self.pass_list = self.__validate_pass_list()
         self.threads = self.__validate_threads()
 
     def __validate_url_option(self):

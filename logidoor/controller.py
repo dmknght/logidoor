@@ -28,7 +28,7 @@ def http_attack(url, options, result):
             browser.login_form = login_form
             if browser.login_form.entry_text:
                 # If login form contains both entry_text and entry_password
-                if not options.userlist:
+                if not options.user_list:
                     print_error(f"Username is required for current URL")
                 else:
                     setup_threads(browser, url, options, result, target=target)
@@ -44,7 +44,7 @@ def http_attack(url, options, result):
 
 
 def ftp_attack(url, options, result):
-    if not options.userlist:
+    if not options.user_list:
         print_error(f"Username is required for FTP protocol")
         return
     from ftplib import FTP
