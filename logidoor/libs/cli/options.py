@@ -1,6 +1,7 @@
 import argparse
 from logidoor.resources import wordlists
 from logidoor.libs.utils import *
+import sys
 
 
 def get_wordlists():
@@ -24,7 +25,7 @@ pre_user_list, pre_passwd_list, pre_usr_passwd_lists = get_wordlists()
 
 
 def parse_options():
-    parser = argparse.ArgumentParser(description="Brute force http")
+    parser = argparse.ArgumentParser(description="Automation HTTP web-from Brute-Forcer")
     group_core = parser.add_argument_group("Core options")
     group_core.add_argument(
         "-u",
@@ -39,7 +40,7 @@ def parse_options():
     group_core.add_argument(
         "-p",
         "--proxy",
-        help="User proxy"  # todo work on here
+        help="User proxy (not supported in this version)"  # todo work on here
     )
     group_core.add_argument(
         "-t",
@@ -92,17 +93,15 @@ def parse_options():
         choices=pre_usr_passwd_lists
     )
     # TODO gen password and sqli
-
+    if len(sys.argv) == 1:
+        parser.print_help()
+        exit()
     return parser
 
 
 class ProgOptions:
     def __init__(self):
         args = parse_options()
-        import sys
-        if len(sys.argv) == 1:
-            args.print_help()
-            exit()
         self.user_options = args.parse_args()
         self.url = self.__validate_url_option()
         self.user_list = self.__validate_user_list()
