@@ -2,8 +2,11 @@ import threading
 
 
 def is_valid_to_add(url, username, result):
+    # When login is found, we added URL and username for current url to queue list
+    # We check the URL and username to detect if login is done
+    # if url == check_url and username == check_username
     for check_values in list(result.queue):
-        if username in check_values and url in check_values:
+        if username == check_values[1] and url in check_values:
             return False
     return True
 
@@ -23,9 +26,6 @@ def setup_threads(browser, url, options, result, target):
             if len(workers) == options.threads:
                 run_threads(workers)
                 del workers[:]
-            # When login is found, we added URL and username for current url to queue list
-            # We check the URL and username to detect if login is done
-            # if url == check_url and username == check_username
             if is_valid_to_add(url, username, result):
                 worker = threading.Thread(target=target, args=(browser, url, username, password, result))
                 worker.daemon = True
