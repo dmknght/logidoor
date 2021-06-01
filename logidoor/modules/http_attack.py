@@ -22,11 +22,15 @@ def send_form_auth(browser, url, username, password, result):
         for this_url in browser.get_page_redirection(resp.text):
             if this_url:
                 if not this_url.startswith("http"):
-                    from urllib.parse import urljoin
-                    check_url = urljoin(url, this_url)
+                    # URL can be Absolute URLs vs. Relative URLs
+                    # When URL is Relative, we can use urljoin as stackoverflow bellow
+                    # from urllib.parse import urljoin
+                    # check_url = urljoin(url, this_url)
+                    # https://stackoverflow.com/a/44002598
+                    # Or use open_relative which is mentioned in the doc, follow_link part
+                    browser.open_relative(this_url)
                 else:
-                    check_url = this_url
-                resp = browser.open(check_url)
+                    browser.open(this_url)
                 if browser.find_login_form():
                     return False
         try:
