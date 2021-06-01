@@ -20,13 +20,20 @@ def send_form_auth(browser, url, username, password, result):
 
     if not browser.find_login_form():
         for this_url in browser.get_page_redirection(resp.text):
-            # FIXME shorten url from href
-            if this_url and this_url.startswith("http"):
-                resp = browser.open(this_url)
+            if this_url:
+                if not this_url.startswith("http"):
+                    from urllib.parse import urljoin
+                    check_url = urljoin(url, this_url)
+                else:
+                    check_url = this_url
+                resp = browser.open(check_url)
                 if browser.find_login_form():
                     return False
-
-        print_info(f"Title: {browser.page.title.text}")
+        try:
+            title = browser.page.title.text
+        except AttributeError:
+            title = "No title"
+        print_info(f"Title: {title}")
         print_info(f"HTTP Status code: {resp.status_code}")
 
         # A verbose like message to print new contents
