@@ -19,7 +19,6 @@ def send_form_auth(browser, url, username, password, result):
     browser.refresh()
 
     if not browser.find_login_form():
-        browser.open(url)
         for this_url in browser.get_page_redirection(resp.text):
             if this_url and "logout" not in this_url:
                 if not this_url.startswith("http"):
