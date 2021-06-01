@@ -19,7 +19,27 @@ def send_form_auth(browser, url, username, password, result):
     browser.refresh()
 
     if not browser.find_login_form():
+        if browser.url != url:
+            # For some website, the login page redirects current user to web panel
+            # if login is done. So with this logic, we can try get the current cookie
+            # and then open new URL again. If the web page doesn't redirect to login page
+            # Then likely the method is good
+            # False positive: it shows logged in for metasploitable 2 tomcat server port 8180
+            pass
+            # cookie_keeper = browser.get_cookiejar().copy()
+            # browser.session.cookies.clear()
+            # browser.session.close()
+            # browser.set_cookiejar(cookie_keeper)
+            # browser.open(browser.url)
+            # if browser.find_login_form():
+            #     return False
+        # else:
         for this_url in browser.get_page_redirection(resp.text):
+            # When login, website can show web panel or error page "failed to login. click here to go back"
+            # Metasploitable 2, tomcat server port 8180 is an example
+            # We can try get all URLs then click on each URL to check if it goes to login page
+            # False positive: If web panel has "logout" URL, the whole result will be wrong
+            # The only solution is analysis response and get the totally different responses
             if this_url and "logout" not in this_url:
                 if not this_url.startswith("http"):
                     # URL can be Absolute URLs vs. Relative URLs
@@ -28,10 +48,10 @@ def send_form_auth(browser, url, username, password, result):
                     # check_url = urljoin(url, this_url)
                     # https://stackoverflow.com/a/44002598
                     # Or use open_relative which is mentioned in the doc, follow_link part
-                    browser.open_relative(this_url)
+                    resp = browser.open_relative(this_url)
                 else:
-                    browser.open(this_url)
-                if browser.find_login_form():
+                    resp = browser.open(this_url)
+                if browser.find_login_form() or resp.status_code >= 400:
                     return False
         try:
             title = browser.page.title.text
@@ -45,9 +65,9 @@ def send_form_auth(browser, url, username, password, result):
         import html2text
         convert = html2text.HTML2Text()
         contents_change = browser.get_page_change(resp.text).strip()
-        new_contents = convert.handle(contents_change).strip()
+        new_contents = convert.handle(contents_change)
         if new_contents.count("\n") < 2:
-            print_info(new_contents)
+            print_info(new_contents.strip())
 
         browser.session.cookies.clear()
         browser.session.close()
