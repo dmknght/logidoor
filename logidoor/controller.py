@@ -9,7 +9,7 @@ def http_attack(url, options, result):
     browser = Browser()
     try:
         from logidoor.modules import http_attack
-        resp = browser.open(url)
+        resp = browser.open(url, verify=False)
 
         # browser.first_page = browser.page
         # try:

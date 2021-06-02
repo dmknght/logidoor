@@ -10,7 +10,7 @@ def send_form_auth(browser, url, username, password, result):
     else:
         printg(f"Username: \033[96m{username:29.29}\033[0m Password: \033[95m{password:29.29}\033[0m")
 
-    browser.open(url)
+    browser.open(url, verify=False)
     if not browser.find_login_form():
         # print_error("Can't find login form for current thread")
         return
@@ -48,9 +48,9 @@ def send_form_auth(browser, url, username, password, result):
                     # check_url = urljoin(url, this_url)
                     # https://stackoverflow.com/a/44002598
                     # Or use open_relative which is mentioned in the doc, follow_link part
-                    resp = browser.open_relative(this_url)
+                    resp = browser.open_relative(this_url, verify=False)
                 else:
-                    resp = browser.open(this_url)
+                    resp = browser.open(this_url, verify=False)
                 if browser.find_login_form() or resp.status_code >= 400:
                     return False
         try:
@@ -86,7 +86,7 @@ def send_form_auth(browser, url, username, password, result):
 
 def send_basic_auth(browser, url, username, password, result):
     printg(f"Username: \033[96m{username:29.29}\033[0m Password: \033[95m{password:29.29}\033[0m")
-    resp = browser.open(url, auth=(username, password))
+    resp = browser.open(url, verify=False, auth=(username, password))
     if resp.status_code == 401:
         pass
     elif resp.status_code >= 400:
