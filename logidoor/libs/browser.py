@@ -67,6 +67,7 @@ class Browser(stateful_browser.StatefulBrowser):
         return self.submit_selected()
 
     def get_page_redirection(self, data):
+        from urllib import parse as urlparse
         """
             Analysis all redirection request in html response via meta tag, windows.location or href
             :return: list of string = all possible URL
@@ -77,7 +78,7 @@ class Browser(stateful_browser.StatefulBrowser):
         url = list(set(re.findall(regex_meta, data)))
         url += list(set(re.findall(regex_js, data)))
         url += list(set(re.findall(regex_href, data)))
-        return [x for x in url if not x.endswith(self.blacklist_extensions)]
+        return set([x for x in url if not urlparse.urlparse(x).path.endswith(self.blacklist_extensions)])
 
     def get_page_change(self, text):
         result = ""
