@@ -36,17 +36,18 @@ def send_form_auth(browser, url, username, password, result):
         # else:
         from urllib import parse as urlparse
         url_path = urlparse.urlparse(url).path
-        for this_url in browser.get_page_redirection(resp.text):
+        for this_url in browser.get_page_redirection(resp.text, url_path):
             # When login, website can show web panel or error page "failed to login. click here to go back"
             # Metasploitable 2, tomcat server port 8180 is an example
             # We can try get all URLs then click on each URL to check if it goes to login page
             # False positive: If web panel has "logout" URL, the whole result will be wrong
             # The only solution is analysis response and get the totally different responses
-            this_url_path = urlparse.urlparse(this_url).path
-            if this_url_path == url_path:
-                # We try to not open all URLs in response if url just has different arguments
-                pass
-            elif this_url and "logout" not in this_url:
+            # this_url_path = urlparse.urlparse(this_url).path
+            # if this_url_path == url_path:
+            #     # We try to not open all URLs in response if url just has different arguments
+            #     pass
+            # elif this_url and "logout" not in this_url:
+            if this_url and "logout" not in this_url:
                 if not this_url.startswith("http"):
                     # URL can be Absolute URLs vs. Relative URLs
                     # When URL is Relative, we can use urljoin as stackoverflow bellow
