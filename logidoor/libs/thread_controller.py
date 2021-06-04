@@ -22,12 +22,16 @@ def run_threads(threads):
 def setup_threads(browser, url, options, result, target):
     workers = []
     for username in options.user_list:
+        # TODO maybe we need to reset position of generator here
         for password in options.pass_list:
             if len(workers) == options.threads:
                 run_threads(workers)
                 del workers[:]
             if is_valid_to_add(url, username, result):
-                worker = threading.Thread(target=target, args=(browser, url, username, password, result))
+                if type(password) == tuple:
+                    worker = threading.Thread(target=target, args=(browser, url, username, "".join(password), result))
+                else:
+                    worker = threading.Thread(target=target, args=(browser, url, username, password, result))
                 worker.daemon = True
                 workers.append(worker)
 
