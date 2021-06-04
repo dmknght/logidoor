@@ -125,30 +125,30 @@ class ProgOptions:
                 return url
 
         if self.user_options.url_list:
-            return set(filter(
+            return tuple(set(filter(
                 None,
-                [validate_url_format(x) for x in file_read(self.user_options.url_list).split("\n")]
-            ))
+                (validate_url_format(x) for x in file_read(self.user_options.url_list).split("\n"))
+            )))
         elif self.user_options.url:
-            return {validate_url_format(self.user_options.url)}
+            return tuple({validate_url_format(self.user_options.url)})
         else:
             raise ValueError("URL address is required")
 
     def __validate_user_list(self):
         if self.user_options.username:
-            return set(self.user_options.username.split(":"))
+            return tuple(set(self.user_options.username.split(":")))
         elif self.user_options.user_list:
             return set(filter(None, file_read(self.user_options.user_list).split("\n")))
         elif self.user_options.pre_user_list:
             if self.user_options.pre_user_list in pre_user_list:
                 module = getattr(wordlists, f"{self.user_options.pre_user_list}_user")
-                return set(module().split("\n"))
+                return tuple(set(module().split("\n")))
             else:
                 raise ValueError("Invalid name of prebuild username wordlist")
         elif self.user_options.pre_wordlist:
             if self.user_options.pre_wordlist in pre_usr_passwd_lists:
                 module = getattr(wordlists, f"{self.user_options.pre_wordlist}_user")
-                return set(module().split("\n"))
+                return tuple(set(module().split("\n")))
             else:
                 raise ValueError("Invalid name of prebuild username wordlist")
         # else:
@@ -156,19 +156,19 @@ class ProgOptions:
 
     def __validate_pass_list(self):
         if self.user_options.password:
-            return {self.user_options.password}
+            return tuple({self.user_options.password})
         elif self.user_options.pass_list:
-            return set(filter(None, file_read(self.user_options.pass_list).split("\n")))
+            return tuple(set(filter(None, file_read(self.user_options.pass_list).split("\n"))))
         elif self.user_options.pre_pass_list:
             if self.user_options.pre_pass_list in pre_passwd_list:
                 module = getattr(wordlists, f"{self.user_options.pre_pass_list}_pass")
-                return set(module().split("\n"))
+                return tuple(set(module().split("\n")))
             else:
                 raise ValueError("Invalid name of prebuild password wordlist")
         elif self.user_options.pre_wordlist:
             if self.user_options.pre_wordlist in pre_usr_passwd_lists:
                 module = getattr(wordlists, f"{self.user_options.pre_wordlist}_pass")
-                return set(module().split("\n"))
+                return tuple(set(module().split("\n")))
             else:
                 raise ValueError("Invalid name of prebuild password wordlist")
         elif self.user_options.pass_mask:
@@ -176,7 +176,7 @@ class ProgOptions:
             return product(*self.__parse_pass_mask(), repeat=1)
         else:
             module = getattr(wordlists, "default_pass")
-            return set(module().split("\n"))
+            return tuple(set(module().split("\n")))
 
     def __parse_pass_mask(self):
         import string
