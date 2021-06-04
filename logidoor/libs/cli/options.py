@@ -92,6 +92,12 @@ def parse_options():
         metavar="Wordlist",
         choices=pre_usr_passwd_lists
     )
+    group_wordlist.add_argument(
+        "-pM",
+        "--pass-mask",
+        help="Generate password from mask",
+        metavar="awWds"
+    )
     # TODO gen password and sqli
     if len(sys.argv) == 1:
         parser.print_help()
@@ -165,9 +171,29 @@ class ProgOptions:
                 return set(module().split("\n"))
             else:
                 raise ValueError("Invalid name of prebuild password wordlist")
+        elif self.user_options.pass_mask:
+            from itertools import product
+            return product(*self.__parse_pass_mask(), repeat=1)
         else:
             module = getattr(wordlists, "default_pass")
             return set(module().split("\n"))
+
+    def __parse_pass_mask(self):
+        import string
+        charsets = []
+
+        for mask in self.user_options.pass_mask:
+            if mask == "a":
+                charsets.append(tuple(string.ascii_letters))
+            elif mask == "w":
+                charsets.append(tuple(string.ascii_lowercase))
+            elif mask == "W":
+                charsets.append(tuple(string.ascii_uppercase))
+            elif mask == "d":
+                charsets.append(tuple(string.digits))
+            elif mask == "s":
+                charsets.append(tuple(string.punctuation))
+        return charsets
 
     def __validate_threads(self):
         try:
