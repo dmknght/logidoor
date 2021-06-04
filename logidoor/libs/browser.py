@@ -79,7 +79,8 @@ class Browser(stateful_browser.StatefulBrowser):
         url += list(set(re.findall(regex_js, data)))
         url += list(set(re.findall(regex_href, data)))
         return set(
-            [x for x in url if not urlparse.urlparse(x).path.endswith(self.blacklist_extensions) and x != check_url]
+            [x for x in url if not urlparse.urlparse(x).path.endswith(self.blacklist_extensions) and x != check_url
+             and urlparse.urlparse(x).netloc == urlparse.urlparse(check_url)]
         )
 
     def get_page_change(self, text):
