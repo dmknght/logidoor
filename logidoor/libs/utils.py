@@ -29,6 +29,23 @@
 _version_ = "0.0.1"
 
 
+def read_lines(file_path):
+    """
+    Read lines from file as iterator
+    :param file_path: string: path to file
+    :return:
+    """
+    f = None
+    try:
+        f = open(file_path)
+        for line in f:
+            yield line.replace("\n", "")
+    except Exception:
+        raise Exception("Error while reading wordlist of password")
+    finally:
+        if f:
+            f.close()
+
 def file_load(file_location):
     """
     Try open a file and give user file object

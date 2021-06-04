@@ -118,8 +118,8 @@ class ProgOptions:
             for password in set(self.user_options.password):
                 yield password
         elif self.user_options.pass_list:
-            # TODO runtime file handle here
-            return tuple(set(filter(None, file_read(self.user_options.pass_list).split("\n"))))
+            for password in read_lines(self.user_options.pass_list):
+                yield password
         elif self.user_options.pre_pass_list:
             if self.user_options.pre_pass_list in pre_passwd_list:
                 module = getattr(wordlists, f"{self.user_options.pre_pass_list}_pass")
@@ -148,8 +148,8 @@ class ProgOptions:
             for username in set(self.user_options.username.split(":")):
                 yield username
         elif self.user_options.user_list:
-            # TODO handle runtime file read here
-            return set(filter(None, file_read(self.user_options.user_list).split("\n")))
+            for username in read_lines(self.user_options.user_list):
+                yield username
         elif self.user_options.pre_user_list:
             if self.user_options.pre_user_list in pre_user_list:
                 module = getattr(wordlists, f"{self.user_options.pre_user_list}_user")
