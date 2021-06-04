@@ -98,7 +98,7 @@ def parse_options():
         help="Generate password from mask",
         metavar="awWds"
     )
-    # TODO gen password and sqli
+    # TODO gen sqli
     if len(sys.argv) == 1:
         parser.print_help()
         exit()
@@ -110,15 +110,65 @@ class ProgOptions:
         args = parse_options()
         self.user_options = args.parse_args()
         self.url = self.__validate_url_option()
-        self.user_list = self.__validate_user_list()
-        self.pass_list = self.__validate_pass_list()
+        self.user_list = self.__is_user_list()
         self.threads = self.__validate_threads()
+
+    def get_pass_list(self):
+        if self.user_options.password:
+            for password in set(self.user_options.password):
+                yield password
+        elif self.user_options.pass_list:
+            # TODO runtime file handle here
+            return tuple(set(filter(None, file_read(self.user_options.pass_list).split("\n"))))
+        elif self.user_options.pre_pass_list:
+            if self.user_options.pre_pass_list in pre_passwd_list:
+                module = getattr(wordlists, f"{self.user_options.pre_pass_list}_pass")
+                for password in set(module().split("\n")):
+                    yield password
+            else:
+                raise ValueError("Invalid name of prebuild password wordlist")
+        elif self.user_options.pre_wordlist:
+            if self.user_options.pre_wordlist in pre_usr_passwd_lists:
+                module = getattr(wordlists, f"{self.user_options.pre_wordlist}_pass")
+                for password in set(module().split("\n")):
+                    yield password
+            else:
+                raise ValueError("Invalid name of prebuild password wordlist")
+        elif self.user_options.pass_mask:
+            from itertools import product
+            for password in product(*self.__parse_pass_mask(), repeat=1):
+                yield password
+        else:
+            module = getattr(wordlists, "default_pass")
+            for password in set(module().split("\n")):
+                yield password
+
+    def get_user_list(self):
+        if self.user_options.username:
+            for username in set(self.user_options.username.split(":")):
+                yield username
+        elif self.user_options.user_list:
+            # TODO handle runtime file read here
+            return set(filter(None, file_read(self.user_options.user_list).split("\n")))
+        elif self.user_options.pre_user_list:
+            if self.user_options.pre_user_list in pre_user_list:
+                module = getattr(wordlists, f"{self.user_options.pre_user_list}_user")
+                for username in set(module().split("\n")):
+                    yield username
+            else:
+                raise ValueError("Invalid name of prebuild username wordlist")
+        elif self.user_options.pre_wordlist:
+            if self.user_options.pre_wordlist in pre_usr_passwd_lists:
+                module = getattr(wordlists, f"{self.user_options.pre_wordlist}_user")
+                for username in set(module().split("\n")):
+                    yield username
+            else:
+                raise ValueError("Invalid name of prebuild username wordlist")
 
     def __validate_url_option(self):
         def validate_url_format(url):
             if not url:
                 return url
-            # if not url.startswith("http"):
             if "://" not in url:
                 return "http://" + url
             else:
@@ -134,49 +184,11 @@ class ProgOptions:
         else:
             raise ValueError("URL address is required")
 
-    def __validate_user_list(self):
-        if self.user_options.username:
-            return tuple(set(self.user_options.username.split(":")))
-        elif self.user_options.user_list:
-            return set(filter(None, file_read(self.user_options.user_list).split("\n")))
-        elif self.user_options.pre_user_list:
-            if self.user_options.pre_user_list in pre_user_list:
-                module = getattr(wordlists, f"{self.user_options.pre_user_list}_user")
-                return tuple(set(module().split("\n")))
-            else:
-                raise ValueError("Invalid name of prebuild username wordlist")
-        elif self.user_options.pre_wordlist:
-            if self.user_options.pre_wordlist in pre_usr_passwd_lists:
-                module = getattr(wordlists, f"{self.user_options.pre_wordlist}_user")
-                return tuple(set(module().split("\n")))
-            else:
-                raise ValueError("Invalid name of prebuild username wordlist")
-        # else:
-        #     raise ValueError("Username is required")
-
-    def __validate_pass_list(self):
-        if self.user_options.password:
-            return tuple({self.user_options.password})
-        elif self.user_options.pass_list:
-            return tuple(set(filter(None, file_read(self.user_options.pass_list).split("\n"))))
-        elif self.user_options.pre_pass_list:
-            if self.user_options.pre_pass_list in pre_passwd_list:
-                module = getattr(wordlists, f"{self.user_options.pre_pass_list}_pass")
-                return tuple(set(module().split("\n")))
-            else:
-                raise ValueError("Invalid name of prebuild password wordlist")
-        elif self.user_options.pre_wordlist:
-            if self.user_options.pre_wordlist in pre_usr_passwd_lists:
-                module = getattr(wordlists, f"{self.user_options.pre_wordlist}_pass")
-                return tuple(set(module().split("\n")))
-            else:
-                raise ValueError("Invalid name of prebuild password wordlist")
-        elif self.user_options.pass_mask:
-            from itertools import product
-            return product(*self.__parse_pass_mask(), repeat=1)
-        else:
-            module = getattr(wordlists, "default_pass")
-            return tuple(set(module().split("\n")))
+    def __is_user_list(self):
+        if self.user_options.username or self.user_options.user_list or self.user_options.pre_userlist or \
+                self.user_options.pre_wordlist:
+            return True
+        return False
 
     def __parse_pass_mask(self):
         import string
