@@ -56,7 +56,7 @@ class Browser(stateful_browser.StatefulBrowser):
             raise AttributeError("Login form has no name, action or method to select")
 
         if self.login_form.entry_text:
-            entry = self.login_form.entry_text[0][1] if self.login_form.entry_text[0][1] else\
+            entry = self.login_form.entry_text[0][1] if self.login_form.entry_text[0][1] else \
                 self.login_form.entry_text[0][0]
             self[entry] = username
 
@@ -78,10 +78,16 @@ class Browser(stateful_browser.StatefulBrowser):
         url = list(set(re.findall(regex_meta, data)))
         url += list(set(re.findall(regex_js, data)))
         url += list(set(re.findall(regex_href, data)))
-        return tuple(set(
-            (x for x in url if not urlparse.urlparse(x).path.endswith(self.blacklist_extensions) and x != check_url
-             and urlparse.urlparse(x).netloc == urlparse.urlparse(check_url))
-        ))
+        return_urls = []
+        for current_url in url:
+            to_check_url = current_url
+            if not to_check_url.startswith("http"):
+                to_check_url = urlparse.urljoin(check_url, to_check_url)
+            if not urlparse.urlparse(to_check_url).path.endswith(self.blacklist_extensions) and \
+                    urlparse.urlparse(to_check_url).netloc == urlparse.urlparse(check_url).netloc and \
+                    urlparse.urlparse(to_check_url).path != urlparse.urlparse(check_url).path:
+                return_urls.append(to_check_url)
+        return return_urls
 
     def get_page_change(self, text):
         result = ""
@@ -90,4 +96,3 @@ class Browser(stateful_browser.StatefulBrowser):
                 result += line + "\n"
 
         return result
-

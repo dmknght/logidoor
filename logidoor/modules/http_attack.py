@@ -34,9 +34,7 @@ def send_form_auth(browser, url, username, password, result):
             # if browser.find_login_form():
             #     return False
         # else:
-        from urllib import parse as urlparse
-        url_path = urlparse.urlparse(url).path
-        for this_url in browser.get_page_redirection(resp.text, url_path):
+        for this_url in browser.get_page_redirection(resp.text, url):
             # When login, website can show web panel or error page "failed to login. click here to go back"
             # Metasploitable 2, tomcat server port 8180 is an example
             # We can try get all URLs then click on each URL to check if it goes to login page
@@ -48,16 +46,17 @@ def send_form_auth(browser, url, username, password, result):
             #     pass
             # elif this_url and "logout" not in this_url:
             if this_url and "logout" not in this_url:
-                if not this_url.startswith("http"):
-                    # URL can be Absolute URLs vs. Relative URLs
-                    # When URL is Relative, we can use urljoin as stackoverflow bellow
-                    # from urllib.parse import urljoin
-                    # check_url = urljoin(url, this_url)
-                    # https://stackoverflow.com/a/44002598
-                    # Or use open_relative which is mentioned in the doc, follow_link part
-                    resp = browser.open_relative(this_url, verify=False)
-                else:
-                    resp = browser.open(this_url, verify=False)
+                # if not this_url.startswith("http"):
+                #     # URL can be Absolute URLs vs. Relative URLs
+                #     # When URL is Relative, we can use urljoin as stackoverflow bellow
+                #     # from urllib.parse import urljoin
+                #     # check_url = urljoin(url, this_url)
+                #     # https://stackoverflow.com/a/44002598
+                #     # Or use open_relative which is mentioned in the doc, follow_link part
+                #     resp = browser.open_relative(this_url, verify=False)
+                # else:
+                #     resp = browser.open(this_url, verify=False)
+                resp = browser.open(this_url, verify=False)
                 if browser.find_login_form() or resp.status_code >= 400:
                     return False
         try:
