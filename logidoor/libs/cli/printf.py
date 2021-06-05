@@ -21,7 +21,7 @@ def print_error(text, info="INFO"):
 
 def print_warn(text):
     __clean()
-    print(f"  [\033[93m!\033[0m] {text}")
+    print(f"  [\033[93mWARN\033[0m] {text}")
 
 
 def print_attack(url):
