@@ -11,12 +11,13 @@ def send_form_auth(browser, url, username, password, result):
         printg(f"Username: \033[96m{username:29.29}\033[0m Password: \033[95m{password:29.29}\033[0m")
 
     browser.open(url, verify=False)
-    if not browser.find_login_form():
+    first_login_form = browser.find_login_form()
+    if not first_login_form:
         # print_error("Can't find login form for current thread")
         return
 
     resp = browser.login(username, password)
-    browser.refresh()
+    # browser.refresh()
 
     if not browser.find_login_form():
         if browser.url != url:
@@ -57,7 +58,13 @@ def send_form_auth(browser, url, username, password, result):
                 # else:
                 #     resp = browser.open(this_url, verify=False)
                 resp = browser.open(this_url, verify=False)
-                if browser.find_login_form() or resp.status_code >= 400:
+                if resp.status_code >= 400:
+                    return False
+                check_login_form = browser.find_login_form()
+                if check_login_form:
+                    if check_login_form.__dict__ != first_login_form.__dict__:
+                        print_warn(f"Login form is different from the first one")
+                        print_found(username, password)
                     return False
         try:
             title = browser.page.title.text
