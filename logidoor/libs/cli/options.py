@@ -62,6 +62,13 @@ def parse_options():
         help="Path to username wordlist"
     )
     group_wordlist.add_argument(
+        "-uW",
+        "--pre-user-list",
+        help=f"Select prebuild username wordlist. Choices: {pre_user_list}",
+        metavar="Wordlist",
+        choices=pre_user_list
+    )
+    group_wordlist.add_argument(
         "-pn",
         "--password",
         help="Password"
@@ -70,13 +77,6 @@ def parse_options():
         "-pF",
         "--pass-list",
         help="Path to password wordlist"
-    )
-    group_wordlist.add_argument(
-        "-uW",
-        "--pre-user-list",
-        help=f"Select prebuild username wordlist. Choices: {pre_user_list}",
-        metavar="Wordlist",
-        choices=pre_user_list
     )
     group_wordlist.add_argument(
         "-pW",
