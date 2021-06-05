@@ -14,9 +14,9 @@ def print_found(username, password):
         print(f"  [\033[97mFound\033[0m][Password: \"\033[95m{password}\033[0m\"]")
 
 
-def print_error(text):
+def print_error(text, info="INFO"):
     __clean()
-    print(f"  [\033[91mERR\033[0m] {text}")
+    print(f"  [\033[91m{info}\033[0m] {text}")
 
 
 def print_warn(text):

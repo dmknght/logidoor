@@ -92,7 +92,7 @@ def send_basic_auth(browser, url, username, password, result):
     if resp.status_code == 401:
         pass
     elif resp.status_code >= 400:
-        print_error(f"{resp.status_code} for \"\033[96m{username}\033[0m\":\"\033[95m{password}\033[0m\"")
+        print_error(f"\"\033[96m{username}\033[0m\":\"\033[95m{password}\033[0m\"", info=resp.status_code)
     else:
         print_found(username, password)
         result.put([url, username, password])
