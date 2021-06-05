@@ -64,6 +64,12 @@ def send_form_auth(browser, url, username, password, result):
                 if check_login_form:
                     if check_login_form.__dict__ != first_login_form.__dict__:
                         print_warn(f"Login form is different from the first one")
+                        try:
+                            title = browser.page.title.text
+                        except AttributeError:
+                            title = "No title"
+                        print_info(f"Title: {title}")
+                        print_info(f"HTTP Status code: {resp.status_code}")
                         print_found(username, password)
                     return False
         try:
