@@ -32,6 +32,8 @@ def setup_threads(browser, url, options, result, target):
                 worker = threading.Thread(target=target, args=(browser, url, username, password, result))
                 worker.daemon = True
                 workers.append(worker)
+            else:
+                break
 
     if workers:
         run_threads(workers)
