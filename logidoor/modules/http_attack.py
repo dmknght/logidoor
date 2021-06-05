@@ -41,22 +41,7 @@ def send_form_auth(browser, url, username, password, result):
             # We can try get all URLs then click on each URL to check if it goes to login page
             # False positive: If web panel has "logout" URL, the whole result will be wrong
             # The only solution is analysis response and get the totally different responses
-            # this_url_path = urlparse.urlparse(this_url).path
-            # if this_url_path == url_path:
-            #     # We try to not open all URLs in response if url just has different arguments
-            #     pass
-            # elif this_url and "logout" not in this_url:
             if this_url and "logout" not in this_url:
-                # if not this_url.startswith("http"):
-                #     # URL can be Absolute URLs vs. Relative URLs
-                #     # When URL is Relative, we can use urljoin as stackoverflow bellow
-                #     # from urllib.parse import urljoin
-                #     # check_url = urljoin(url, this_url)
-                #     # https://stackoverflow.com/a/44002598
-                #     # Or use open_relative which is mentioned in the doc, follow_link part
-                #     resp = browser.open_relative(this_url, verify=False)
-                # else:
-                #     resp = browser.open(this_url, verify=False)
                 resp = browser.open(this_url, verify=False)
                 if resp.status_code >= 400:
                     return False
@@ -68,16 +53,14 @@ def send_form_auth(browser, url, username, password, result):
                             title = browser.page.title.text
                         except AttributeError:
                             title = "No title"
-                        print_info(f"Title: {title}")
-                        print_info(f"HTTP Status code: {resp.status_code}")
+                        print_info(f"Title: {title}", info=resp.status_code)
                         print_found(username, password)
                     return False
         try:
             title = browser.page.title.text
         except AttributeError:
             title = "No title"
-        print_info(f"Title: {title}")
-        print_info(f"HTTP Status code: {resp.status_code}")
+        print_info(f"Title: {title}", info=resp.status_code)
 
         # A verbose like message to print new contents
         # When tool gets false positives, attacker knows using the output msg

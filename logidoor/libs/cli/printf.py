@@ -34,9 +34,9 @@ def print_no_login_found(url):
     print(f"  [\033[91mATT\033[0m] Can't find login at \033[94m{url}\033[0m")
 
 
-def print_info(text):
+def print_info(text, info="INFO"):
     __clean()
-    print(f"  [\033[97mINFO\033[0m] {text}")
+    print(f"  [\033[97m{info}\033[0m] {text}")
 
 
 def print_results(results):

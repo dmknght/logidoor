@@ -81,6 +81,12 @@ class Browser(stateful_browser.StatefulBrowser):
         for current_url in url:
             to_check_url = current_url
             if not to_check_url.startswith("http"):
+                # URL can be Absolute URLs vs. Relative URLs
+                # When URL is Relative, we can use urljoin as stackoverflow bellow
+                # from urllib.parse import urljoin
+                # check_url = urljoin(url, this_url)
+                # https://stackoverflow.com/a/44002598
+                # Or use open_relative which is mentioned in the doc, follow_link part
                 to_check_url = urlparse.urljoin(check_url, to_check_url)
             if not urlparse.urlparse(to_check_url).path.endswith(self.blacklist_extensions) and \
                     urlparse.urlparse(to_check_url).netloc == urlparse.urlparse(check_url).netloc and \
