@@ -185,7 +185,7 @@ class ProgOptions:
             raise ValueError("URL address is required")
 
     def __is_user_list(self):
-        if self.user_options.username or self.user_options.user_list or self.user_options.pre_userlist or \
+        if self.user_options.username or self.user_options.user_list or self.user_options.pre_user_list or \
                 self.user_options.pre_wordlist:
             return True
         return False
