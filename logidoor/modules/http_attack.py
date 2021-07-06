@@ -2,9 +2,11 @@ from logidoor.libs.cli.progressbar import printg
 from logidoor.libs.cli.printf import *
 
 
-def send_form_auth(browser, url, username, password, result):
+def send_form_auth(browser, url, username, password, proxy, result):
     # Limit length of string using format
     # https://stackoverflow.com/a/24076314
+    # TODO auto select UA
+    browser.auto_set_proxy(proxy)
     if not browser.login_form.entry_text:
         printg(f"Password: \033[95m{password:50.50}\033[0m")
     else:

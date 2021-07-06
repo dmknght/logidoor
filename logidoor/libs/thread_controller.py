@@ -29,9 +29,10 @@ def setup_threads(browser, url, options, result, target):
             if is_valid_to_add(url, username, result):
                 if type(password) == tuple:
                     password = "".join(password)
-                browser.auto_set_proxy(options.get_proxy())
-                # TODO auto select UA
-                worker = threading.Thread(target=target, args=(browser, url, username, password, result))
+                worker = threading.Thread(
+                    target=target,
+                    args=(browser, url, username, password, options.get_proxy(), result)
+                )
                 worker.daemon = True
                 workers.append(worker)
             else:
@@ -52,7 +53,7 @@ def setup_threads_no_username(browser, url, options, result, target):
                 return
             run_threads(workers)
             del workers[:]
-        worker = threading.Thread(target=target, args=(browser, url, None, password, result))
+        worker = threading.Thread(target=target, args=(browser, url, None, password, options.get_proxy(), result))
         worker.daemon = True
         workers.append(worker)
     if workers:
