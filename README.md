@@ -1,8 +1,9 @@
-<h1 align='center'>BruteforceHTTP</h1>
+<h1 align='center'>logidoor</h1>
 <p align='center'><i>An automated brute forcing tool</i></p>
 
 ## About this project
-A HTTP brute force tool bases on Mechanize browser.
+A HTTP brute force tool bases on Mechanize browser. This is rewritten of https://github.com/dmknght/BruteforceHTTP/ with mechanicalsoup 1.0.0 and python3 only.
+The README for new tool isn't fully updated.
 
 ## Installation
 
@@ -10,12 +11,11 @@ Requirements
 
 | name        |
 |-------------|
-| python / python3 / pypy |
+| python3 |
 | bs4 [beautifulsoup] |
 | python-regex (optional) |
-| python-lxml (optional) |
+| python-lxml |
 | html2text |
-| python-uritools (optional) |
 | mechanicalsoup |
 
 
@@ -26,13 +26,6 @@ This project should work on both python2, python3 and pypy. But, unfortunately D
 sudo apt install python3 python3-regex git python3-uritools python3-bs4 python3-mechanicalsoup
 sudo pip3 install html2text
 ```
- - Install for pypy:
-```
-sudo apt install pypy python-uritools python-bs4 python-regex git
-sudo pip2 install html2text mechanicalsoup
-```
-
-Python2 could have error `ImportError: No module named mechanicalsoup.stateful_browser`
 
 2. Clone the project:
 ```
@@ -40,14 +33,12 @@ git clone https://github.com/dmknght/BruteforceHTTP.git
 ```
 
 3. Run project
-- Pypy:
-`pypy main.py`
 - Python3:
 `python3 main.py`
 
 ## Options
 ```
-Usage: main.py [options] <url>
+Usage: logidoor.py [options] <url>
 ```
 Options:
 
