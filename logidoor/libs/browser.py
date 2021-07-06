@@ -1,5 +1,7 @@
 import re
 from logidoor.libs.mechanicalsoup import stateful_browser
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+import requests
 
 
 class Form:
@@ -14,6 +16,7 @@ class Form:
 
 class Browser(stateful_browser.StatefulBrowser):
     def __init__(self, *args, **kwargs):
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         self.login_form = None
         self.first_page = ""
         self.first_title = ""
