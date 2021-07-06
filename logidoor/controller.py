@@ -43,30 +43,12 @@ def http_attack(url, options, result):
         browser.close()
 
 
-def ftp_attack(url, options, result):
-    if not options.user_list:
-        print_error(f"Username is required for FTP protocol")
-        return
-    from ftplib import FTP
-    from logidoor.modules.ftp_attack import send_ftp_auth, check_anonymous_login
-
-    session = FTP()
-
-    check_anonymous_login(session, url)
-
-    target = send_ftp_auth
-    setup_threads(session, url, options, result, target)
-
-
 def do_attack(options):
     result = queue.Queue()
-
     for url in options.url:
         print_attack(url)
         if url.startswith(("http://", "https")):
             http_attack(url, options, result)
-        elif url.startswith("ftp://"):
-            ftp_attack(url, options, result)
         else:
             print_error(f"Protocol {url.split('/')[0]} is not supported")
 
