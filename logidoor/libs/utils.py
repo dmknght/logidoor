@@ -46,6 +46,7 @@ def read_lines(file_path):
         if f:
             f.close()
 
+
 def file_load(file_location):
     """
     Try open a file and give user file object

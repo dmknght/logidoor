@@ -23,6 +23,12 @@ class Browser(stateful_browser.StatefulBrowser):
             ".7z")
         super().__init__(*args, **kwargs)
 
+    def auto_set_proxy(self, proxy):
+        if not proxy:
+            pass
+        else:
+            self.session.proxies = proxy
+
     def find_login_form(self):
         try:
             for form in self.page.find_all("form"):

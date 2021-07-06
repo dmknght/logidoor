@@ -2,6 +2,7 @@ import argparse
 from logidoor.resources import wordlists
 from logidoor.libs.utils import *
 import sys
+import random
 
 
 def get_wordlists():
@@ -38,10 +39,16 @@ def parse_options():
         help="Path to file contains URL"
     )
     group_core.add_argument(
-        "-p",
+        "-px",
         "--proxy",
-        help="User proxy (not supported in this version)"  # todo work on here
+        help="Use proxy address"
     )
+    group_core.add_argument(
+        "-pxF",
+        "--proxy-file",
+        help="Use proxy list from file"
+    )
+    # TODO auto proxy and auto get
     group_core.add_argument(
         "-t",
         "--threads",
@@ -212,3 +219,10 @@ class ProgOptions:
             return int(self.user_options.threads)
         except Exception:
             raise Exception("Invalid thread options")
+
+    def get_proxy(self):
+        # TODO work here to load proxy list from file without memory problem
+        if self.user_options.proxy_file:
+            return random.choices([x for x in read_lines(self.user_options.proxy_file)])
+        else:
+            return self.user_options.proxy
