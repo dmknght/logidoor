@@ -65,7 +65,7 @@ def parse_options():
     )
     group_wordlist.add_argument(
         "-uF",
-        "--user-list",
+        "--user-file",
         help="Path to username wordlist"
     )
     group_wordlist.add_argument(
@@ -82,7 +82,7 @@ def parse_options():
     )
     group_wordlist.add_argument(
         "-pF",
-        "--pass-list",
+        "--pass-file",
         help="Path to password wordlist"
     )
     group_wordlist.add_argument(
@@ -124,8 +124,8 @@ class ProgOptions:
         if self.user_options.password:
             for password in set(self.user_options.password):
                 yield password
-        elif self.user_options.pass_list:
-            for password in read_lines(self.user_options.pass_list):
+        elif self.user_options.pass_file:
+            for password in read_lines(self.user_options.pass_file):
                 yield password
         elif self.user_options.pre_pass_list:
             if self.user_options.pre_pass_list in pre_passwd_list:
@@ -154,8 +154,8 @@ class ProgOptions:
         if self.user_options.username:
             for username in set(self.user_options.username.split(":")):
                 yield username
-        elif self.user_options.user_list:
-            for username in read_lines(self.user_options.user_list):
+        elif self.user_options.user_file:
+            for username in read_lines(self.user_options.user_file):
                 yield username
         elif self.user_options.pre_user_list:
             if self.user_options.pre_user_list in pre_user_list:
@@ -192,7 +192,7 @@ class ProgOptions:
             raise ValueError("URL address is required")
 
     def __is_user_list(self):
-        if self.user_options.username or self.user_options.user_list or self.user_options.pre_user_list or \
+        if self.user_options.username or self.user_options.user_file or self.user_options.pre_user_list or \
                 self.user_options.pre_wordlist:
             return True
         return False
