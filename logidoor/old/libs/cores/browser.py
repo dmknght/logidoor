@@ -18,6 +18,9 @@ class Browser(StatefulBrowser):
     def __init__(self, *args, **kwargs):
         super(Browser, self).__init__()
         import requests
+        from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         requests.packages.urllib3.disable_warnings()
         # Create browser object. All browser settings should be here
         # https://stackoverflow.com/a/27096416
