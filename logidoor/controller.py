@@ -1,5 +1,4 @@
 import queue
-
 from logidoor.libs.browser import Browser
 from logidoor.libs.cli.printf import *
 from logidoor.libs.thread_controller import setup_threads, setup_threads_no_username
@@ -26,6 +25,9 @@ def http_attack(url, options, result):
         login_form = browser.find_login_form()
         if login_form:
             browser.login_form = login_form
+            # Get page's content from HTML. We compare content later
+            browser.get_page_first_contents(resp.text)
+            # Setup threads
             if browser.login_form.entry_text:
                 # If login form contains both entry_text and entry_password
                 if not options.user_list:
@@ -46,9 +48,11 @@ def http_attack(url, options, result):
 def do_attack(options):
     result = queue.Queue()
     for url in options.url:
-        print_attack(url)
-        if url.startswith(("http://", "https")):
+        if url.startswith(("http://", "https://")):
+            print_attack(url)
             http_attack(url, options, result)
+        elif url.startswith("#"):
+            print(f"Skipping {url[1:]}")
         else:
             print_error(f"Protocol {url.split('/')[0]} is not supported")
 

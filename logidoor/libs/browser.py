@@ -2,6 +2,7 @@ import re
 from logidoor.libs.mechanicalsoup import stateful_browser
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import requests
+import html2text
 
 
 class Form:
@@ -20,6 +21,7 @@ class Browser(stateful_browser.StatefulBrowser):
         self.login_form = None
         self.first_page = ""
         self.first_title = ""
+        self.first_content = ""
         # self.first_content = ""
         self.blacklist_extensions = (
             ".css", ".js", ".jpg", ".png", ".jpeg", ".doc", ".docx", ".xlsx", ".pdf", ".txt", ".rar", ".bak", ".zip",
@@ -31,6 +33,18 @@ class Browser(stateful_browser.StatefulBrowser):
             pass
         else:
             self.session.proxies = proxy
+
+    def auto_set_ua(self):
+        # TODO generate random UserAgent here
+        pass
+
+    def get_page_contents(self, resp):
+        convert = html2text.HTML2Text()
+        contents = convert.handle(resp)
+        return contents
+
+    def get_page_first_contents(self, resp):
+        self.first_content = self.get_page_contents(resp)
 
     def find_login_form(self):
         try:

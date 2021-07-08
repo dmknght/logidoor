@@ -174,7 +174,7 @@ class ProgOptions:
 
     def __validate_url_option(self):
         def validate_url_format(url):
-            if not url:
+            if not url or url.startswith("#"):
                 return url
             if "://" not in url:
                 return "http://" + url
