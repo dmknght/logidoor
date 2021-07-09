@@ -48,6 +48,11 @@ def parse_options():
         "--proxy-file",
         help="Use proxy list from file"
     )
+    group_core.add_argument(
+        "-iK",
+        "--ignored-keywords",
+        help="Keywords if login is failed (optional)"
+    )
     # TODO auto proxy and auto get
     group_core.add_argument(
         "-t",
@@ -119,6 +124,7 @@ class ProgOptions:
         self.url = self.__validate_url_option()
         self.user_list = self.__is_user_list()
         self.threads = self.__validate_threads()
+        self.ignored_keywords = self.__get_keywords()
 
     def get_pass_list(self):
         if self.user_options.password:
@@ -226,3 +232,6 @@ class ProgOptions:
             return random.choices([x for x in read_lines(self.user_options.proxy_file)])
         else:
             return self.user_options.proxy
+
+    def __get_keywords(self):
+        return self.user_options.ignored_keywords.split(";")

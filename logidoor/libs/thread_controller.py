@@ -31,7 +31,7 @@ def setup_threads(browser, url, options, result, target):
                     password = "".join(password)
                 worker = threading.Thread(
                     target=target,
-                    args=(browser, url, username, password, options.get_proxy(), result)
+                    args=(browser, url, username, password, options.get_proxy(), options.ignored_keywords, result)
                 )
                 worker.daemon = True
                 workers.append(worker)
@@ -53,7 +53,10 @@ def setup_threads_no_username(browser, url, options, result, target):
                 return
             run_threads(workers)
             del workers[:]
-        worker = threading.Thread(target=target, args=(browser, url, None, password, options.get_proxy(), result))
+        worker = threading.Thread(
+            target=target,
+            args=(browser, url, None, password, options.get_proxy(), options.ignored_keywords, result)
+        )
         worker.daemon = True
         workers.append(worker)
     if workers:

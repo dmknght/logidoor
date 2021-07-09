@@ -48,11 +48,7 @@ def login_analysis(browser, url, resp, first_login_form):
                     return True
 
 
-def send_form_auth(browser, url, username, password, proxy, result):
-    # Limit length of string using format
-    # https://stackoverflow.com/a/24076314
-    browser.auto_set_proxy(proxy)
-    browser.auto_set_ua()
+def http_form_attack(browser, url, username, password, keywords):
     if not browser.login_form.entry_text:
         printg(f"Password: \033[95m{password:50.50}\033[0m")
     else:
@@ -65,25 +61,39 @@ def send_form_auth(browser, url, username, password, proxy, result):
         return
 
     resp = browser.login(username, password)
-    # browser.refresh()
-
-    if not browser.find_login_form():
-        if login_analysis(browser, url, resp, first_login_form):
-            if browser.login_form.entry_text:
-                print_found(username, password)
-                result.put([url, username, password])
+    if keywords:
+        for keyword in keywords:
+            if keyword in resp.text:
+                return False
+        if not browser.find_login_form():
+            return True
+        return False
+    else:
+        if not browser.find_login_form():
+            if login_analysis(browser, url, resp, first_login_form):
                 return True
-            else:
-                print_found(None, password)
-                result.put([url, None, password])
-                return True
-        browser.session.cookies.clear()
-        browser.session.close()
-
     return False
 
 
-def send_basic_auth(browser, url, username, password, result):
+def send_form_auth(browser, url, username, password, proxy, keywords, result):
+    # Limit length of string using format
+    # https://stackoverflow.com/a/24076314
+    browser.auto_set_proxy(proxy)
+    browser.auto_set_ua()
+    if http_form_attack(browser, url, username, password, keywords):
+        if browser.login_form.entry_text:
+            print_found(username, password)
+            result.put([url, username, password])
+            return True
+        else:
+            print_found(None, password)
+            result.put([url, None, password])
+            return True
+    browser.session.cookies.clear()
+    browser.session.close()
+
+
+def send_basic_auth(browser, url, username, password, keywords, result):
     printg(f"Username: \033[96m{username:29.29}\033[0m Password: \033[95m{password:29.29}\033[0m")
     resp = browser.open(url, verify=False, auth=(username, password))
     if resp.status_code == 401:
