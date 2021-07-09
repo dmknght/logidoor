@@ -38,9 +38,15 @@ class Browser(stateful_browser.StatefulBrowser):
         # TODO generate random UserAgent here
         pass
 
-    def get_page_contents(self, resp):
+    # def count_page_contents_urls(self, resp):
+    #     convert = html2text.HTML2Text()
+    #     convert.handle(resp)
+    #     return convert.outcount
+
+    def get_page_contents(self, resp, ignore_links=False):
         convert = html2text.HTML2Text()
-        contents = convert.handle(resp)
+        convert.ignore_links = ignore_links
+        contents = [x for x in convert.handle(resp).split("\n") if x.strip()]
         return contents
 
     def get_page_first_contents(self, resp):
